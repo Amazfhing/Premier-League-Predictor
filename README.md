@@ -31,7 +31,7 @@ Model Training & Execution: Uses a pre-optimized XGBClassifier to predict future
 
 Evaluation Dashboard: Outputs a concise console report showing overall accuracy, precision, a Confusion Matrix, and isolating high-confidence "Strong Predictions" where both Home and Away models agree, followed by a Matplotlib bar chart showing exactly which features the model values most.
 
-3. MergeOdds.py (The Data Pre-processor)
+2. MergeOdds.py (The Data Pre-processor)
 A standalone utility script that takes raw, messy seasonal data downloads from Football-Data.co.uk (e.g., E0_2021.csv, E0_2122.csv) and does the heavy lifting to combine them into cleaned_odds.csv. It actively scans and checks for team-naming mismatches between the odds data and the FBRef match data, preventing silent merge failures in the main engine.
  
 📊 How the Metrics Were Utilized
