@@ -35,6 +35,11 @@ group = grouped_matches.get_group("Manchester United").sort_values("date")
 
 def rolling_averages(group, cols, new_cols):  ## function to take into consideration form of a team
     group = group.sort_values("date")  ## sorting games by date
+    
+    # 1. Rest Days (days since last match)
+    group["rest_days"] = group["date"].diff().dt.days
+    
+    # 2. Short-term form (3-game rolling average)
     rolling_stats = group[cols].rolling(3, closed='left').mean()
     group[new_cols] = rolling_stats
     group = group.dropna(subset=new_cols)  ##droping missing values and replacing with empty
