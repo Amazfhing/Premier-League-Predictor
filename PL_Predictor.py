@@ -42,7 +42,16 @@ def rolling_averages(group, cols, new_cols):  ## function to take into considera
     # 2. Short-term form (3-game rolling average)
     rolling_stats = group[cols].rolling(3, closed='left').mean()
     group[new_cols] = rolling_stats
-    group = group.dropna(subset=new_cols)  ##droping missing values and replacing with empty
+    
+    # 3. Long-term form (10-game rolling average)
+    new_cols_10 = [f"{c}_10_rolling" for c in cols]
+    group[new_cols_10] = group[cols].rolling(10, closed='left').mean()
+    
+    # 4. Rolling Points (sum of points over last 5 games)
+    group["points_last_5"] = group["points"].rolling(5, closed='left').sum()
+    
+    # Drop missing values ensuring we have all features for the model
+    group = group.dropna(subset=new_cols + new_cols_10 + ["rest_days", "points_last_5"])
     return group
 
 
