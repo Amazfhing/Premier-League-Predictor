@@ -15,6 +15,9 @@ matches["date"] = pd.to_datetime(matches["date"])
 result_map = {"L": 0, "D": 1, "W": 2}
 matches["target"] = matches["result"].map(result_map)
 
+## Add Points column (Win=3, Draw=1, Loss=0)
+matches["points"] = matches["target"].map({2: 3, 1: 1, 0: 0})
+
 ## Recommendation 2: One-Hot Encoding for categorical features
 matches = pd.concat([matches, pd.get_dummies(matches[["venue", "opponent"]], drop_first=True)], axis=1)
 
