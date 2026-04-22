@@ -1,15 +1,49 @@
-## PL Predictor using scikit-learn to predict from the matches.csv stat sheet containing data from all matches from 2022-2020
 import pandas as pd
 
 matches = pd.read_csv("matches.csv", index_col=0)
 
-import optuna
+# import optuna
 from xgboost import XGBClassifier
-from sklearn.model_selection import TimeSeriesSplit
+# from sklearn.model_selection import TimeSeriesSplit
 from sklearn.metrics import accuracy_score, precision_score
+import matplotlib.pyplot as plt
+import numpy as np
 
-##converting all objects to int or float to be processed by the machine learning software
 matches["date"] = pd.to_datetime(matches["date"])
+
+## --- BETTING ODDS ---
+odds = pd.read_csv("cleaned_odds.csv")
+odds["Date"] = pd.to_datetime(odds["Date"])
+# Map the mismatched names to match FBRef matches.csv naming
+odds_mapping = {
+    "Brighton": "Brighton and Hove Albion",
+    "Leeds": "Leeds United",
+    "Leicester": "Leicester City",
+    "Man City": "Manchester City",
+    "Man United": "Manchester United",
+    "Newcastle": "Newcastle United",
+    "Norwich": "Norwich City",
+    "Tottenham": "Tottenham Hotspur",
+    "West Brom": "West Bromwich Albion",
+    "West Ham": "West Ham United",
+    "Wolves": "Wolverhampton Wanderers"
+}
+odds["HomeTeam"] = odds["HomeTeam"].replace(odds_mapping)
+odds["AwayTeam"] = odds["AwayTeam"].replace(odds_mapping)
+
+# Reformat odds to be given from the perspective of the Team
+home_odds = odds[["Date", "HomeTeam", "B365H", "B365D", "B365A"]].rename(
+    columns={"Date": "date", "HomeTeam": "team", "B365H": "team_odds", "B365D": "draw_odds", "B365A": "opp_odds"}
+)
+away_odds = odds[["Date", "AwayTeam", "B365A", "B365D", "B365H"]].rename(
+    columns={"Date": "date", "AwayTeam": "team", "B365A": "team_odds", "B365D": "draw_odds", "B365H": "opp_odds"}
+)
+team_odds = pd.concat([home_odds, away_odds])
+
+matches = matches.merge(team_odds, on=["date", "team"], how="left")
+
+# Drop rows that couldn't find a matching odds line
+matches = matches.dropna(subset=["team_odds", "draw_odds", "opp_odds"])
 
 ## Recommendation 5: Multi-Class Target (Win:2, Draw:1, Loss:0)
 result_map = {"L": 0, "D": 1, "W": 2}
@@ -70,62 +104,59 @@ matches_rolling.index = range(matches_rolling.shape[0])  ## adding new index
 
 features = predictors + new_cols + new_cols_10 + ["rest_days", "points_last_5"]
 
+if "team_odds" in matches_rolling.columns:
+    features.extend(["team_odds", "draw_odds", "opp_odds"])
+# Uncomment the block of code below when we want to re-tune the hyper-parameters computationally again
+# def objective(trial):
+#     param = {
+#         "n_estimators": trial.suggest_int("n_estimators", 50, 200),
+#         "max_depth": trial.suggest_int("max_depth", 3, 10),
+#         "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.3),
+#         "subsample": trial.suggest_float("subsample", 0.5, 1.0),
+#         "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
+#         "random_state": 1,
+#         "objective": "multi:softmax",
+#         "num_class": 3
+#     }
+#     xgb = XGBClassifier(**param)
+#
+#     tscv = TimeSeriesSplit(n_splits=3)
+#     precisions = []
+#
+#     data = matches_rolling.sort_values("date")
+#     X = data[features]
+#     y = data["target"]
+#
+#     for train_index, test_index in tscv.split(X):
+#         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+#         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+#
+#         xgb.fit(X_train, y_train)
+#         preds = xgb.predict(X_test)
+#         precisions.append(precision_score(y_test, preds, average="macro", zero_division=0))
+#
+#     return sum(precisions) / len(precisions)
 
-## Recommendation 3 & 6: Optuna with TimeSeriesSplit
-def objective(trial):
-    param = {
-        "n_estimators": trial.suggest_int("n_estimators", 50, 200),
-        "max_depth": trial.suggest_int("max_depth", 3, 10),
-        "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.3),
-        "subsample": trial.suggest_float("subsample", 0.5, 1.0),
-        "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
-        "random_state": 1,
-        "objective": "multi:softmax",
-        "num_class": 3
-    }
-    xgb = XGBClassifier(**param)
-
-    tscv = TimeSeriesSplit(n_splits=3)
-    precisions = []
-
-    # Sort by date for time series split
-    data = matches_rolling.sort_values("date")
-    X = data[features]
-    y = data["target"]
-
-    for train_index, test_index in tscv.split(X):
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-
-        xgb.fit(X_train, y_train)
-        preds = xgb.predict(X_test)
-
-        # calculate precision macro across multi-class
-        precisions.append(precision_score(y_test, preds, average="macro", zero_division=0))
-
-    return sum(precisions) / len(precisions)
-
-
-# We no longer need to run Optuna dynamically because we discovered the optimal parameters.
 # study = optuna.create_study(direction="maximize")
 # study.optimize(objective, n_trials=200)
 # best_params = study.best_params
+# best_params["random_state"] = 1
+# best_params["objective"] = "multi:softmax"
+# best_params["num_class"] = 3
 
-# Best parameters gathered from a 200 trial run using Optuna:
+# Best parameters gathered from previous Optuna runs:
 best_params = {
-    "n_estimators": 198,
-    "max_depth": 4,
-    "learning_rate": 0.01685753063997082,
-    "subsample": 0.5929065714918226,
-    "colsample_bytree": 0.7837450260638121,
+    "n_estimators": 179,
+    "max_depth": 3,
+    "learning_rate": 0.010396244389156468,
+    "subsample": 0.6546497502252517,
+    "colsample_bytree": 0.633452310765801,
     "random_state": 1,
     "objective": "multi:softmax",
     "num_class": 3
 }
 
-## Recommendation 4: Use XGBoost
 model = XGBClassifier(**best_params)
-
 
 def make_predictions(data, predictors):  ## making the predictions
     train = data[data["date"] < '2022-01-01']
@@ -157,71 +188,38 @@ mapping = MissingDict(**map_values)
 
 combined["new_team"] = combined["team"].map(mapping)
 
-merged = combined.merge(combined, left_on=["date", "new_team"], right_on=["date",
-                                                                          "opponent"])  ## finding both the home and away team predictions and merging them
+merged = combined.merge(combined, left_on=["date", "new_team"], right_on=["date", "opponent"])
 
-# --- ADD THIS TO THE BOTTOM OF YOUR FILE ---
-
-print("\n" + "="*40)
-print("🏆 MODEL EVALUATION & STATISTICS 🏆")
-print("="*40)
-
-# 1. Print Optuna Best Parameters
-print("\n[1] OPTUNA BEST HYPERPARAMETERS:")
-for key, value in best_params.items():
-    print(f"    {key}: {value}")
-
-# 2. Print Precision & Accuracy Scores
-print("\n[2] OVERALL SCORES:")
+# --- MODEL EVALUATION & STATISTICS ---
 accuracy = accuracy_score(combined["actual"], combined["prediction"])
-print(f"    Accuracy:  {accuracy:.2%}")
-print(f"    Precision (Macro): {precision:.2%}")
 
-# 3. Print a Confusion Matrix (Actual vs Predicted)
-# 0 = Loss, 1 = Draw, 2 = Win
-print("\n[3] CONFUSION MATRIX (Actual vs Prediction):")
-crosstab = pd.crosstab(
+print("\n--- MODEL EVALUATION ---")
+print(f"Accuracy:  {accuracy:.2%} | Precision: {precision:.2%}")
+print("\nConfusion Matrix (0=L, 1=D, 2=W):")
+print(pd.crosstab(
     index=combined["actual"],
     columns=combined["prediction"],
-    rownames=["Actual (0=L, 1=D, 2=W)"],
-    colnames=["Predicted (0=L, 1=D, 2=W)"]
-)
-print(crosstab)
+    rownames=["Actual"],
+    colnames=["Pred"]
+))
 
-# 4. Evaluate "Strong" Predictions
-# Where the model predicted Home to Win (2) AND Away to Lose (0)
-print("\n[4] TWO-WAY MERGED MATCHES (Strong Predictions):")
-# Filter where model predicted team_x to win and team_y to lose
+# Evaluate "Strong" Predictions
 strong_preds = merged[(merged["prediction_x"] == 2) & (merged["prediction_y"] == 0)]
-
-if len(strong_preds) > 0:
-    # Calculate how often these 'strong' predictions were actually correct (team_x actually won)
+if not strong_preds.empty:
     strong_accuracy = accuracy_score(strong_preds["actual_x"], strong_preds["prediction_x"])
-    print(f"    Found {len(strong_preds)} matches where Model predicted Team A wins and Team B loses.")
-    print(f"    Accuracy of these Strong Predictions: {strong_accuracy:.2%}")
+    print(f"\nStrong Predictions (Both Models Agree): {len(strong_preds)} matches | Accuracy: {strong_accuracy:.2%}")
 else:
-    print("    No strong overlapping predictions found.")
-print("\n========================================")
+    print("\nStrong Predictions: 0 matches found")
 
-# --- 5. Feature Importance Chart ---
-import matplotlib.pyplot as plt
-import numpy as np
-
-# model is already trained from make_predictions
+# --- Feature Importance Chart ---
 importances = model.feature_importances_
-indices = np.argsort(importances)[::-1]
-
-# Display the top 20 most important features
-top_n = 20
-top_indices = indices[:top_n]
-top_features = [features[i] for i in top_indices]
-top_importances = importances[top_indices]
+indices = np.argsort(importances)[::-1][:20]  # Get top 20 directly
 
 plt.figure(figsize=(10, 8))
 plt.title("Top 20 Feature Importances (XGBoost)")
-plt.barh(range(top_n), top_importances, align="center")
-plt.yticks(range(top_n), top_features)
-plt.gca().invert_yaxis() # Highest importance at the top
+plt.barh(range(len(indices)), importances[indices], align="center")
+plt.yticks(range(len(indices)), [features[i] for i in indices])
+plt.gca().invert_yaxis()
 plt.xlabel("Relative Importance")
 plt.tight_layout()
 plt.show()
