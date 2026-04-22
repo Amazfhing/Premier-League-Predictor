@@ -17,12 +17,18 @@ Data Visualization: matplotlib, numpy (Feature importance bar charts)
 1. PL_Predictor.py (The Main Engine)
 This is the core pipeline of the project. It handles:
 Data Ingestion & Cleaning: Reads matches.csv, parses dates, and handles multi-class targets (Win=2, Draw=1, Loss=0).
+
 Feature Engineering: Creates dynamic one-hot encoded variables (for venues and opponents).
+
 Time-Series Logic: Groups data by team and injects "Form" metrics (3-game/10-game rolling averages) to simulate historical momentum.
+
 Odds Integration: Intelligently merges in the normalized Vegas odds.
+
 Model Training & Execution: Uses a pre-optimized XGBClassifier to predict future match outcomes on sequential test data (post-2022).
+
 Evaluation Dashboard: Outputs a concise console report showing overall accuracy, precision, a Confusion Matrix, and isolating high-confidence "Strong Predictions" where both Home and Away models agree, followed by a Matplotlib bar chart showing exactly which features the model values most.
-2. MergeOdds.py (The Data Pre-processor)
+
+3. MergeOdds.py (The Data Pre-processor)
 A standalone utility script that takes raw, messy seasonal data downloads from Football-Data.co.uk (e.g., E0_2021.csv, E0_2122.csv) and does the heavy lifting to combine them into cleaned_odds.csv. It actively scans and checks for team-naming mismatches between the odds data and the FBRef match data, preventing silent merge failures in the main engine.
  
 📊 How the Metrics Were Utilized
