@@ -3,9 +3,13 @@
 🛠️ Tech Stack
 
 Language: Python
+
 Data Manipulation: pandas (Core dataframe handling, merging, rolling time-window calculations)
+
 Machine Learning Core: scikit-learn (Metrics formatting, test/train splitting), xgboost (Advanced gradient-boosted decision trees algorithm)
+
 Hyperparameter Tuning: optuna (Bayesian optimization framework)
+
 Data Visualization: matplotlib, numpy (Feature importance bar charts)
  
 📂 Project Files breakdown
