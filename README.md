@@ -15,7 +15,8 @@ Data Visualization: matplotlib, numpy (Feature importance bar charts)
 📂 Project Files breakdown
 
 1. PL_Predictor.py (The Main Engine)
-This is the core pipeline of the project. It handles:
+This is the core pipeline of the project.
+It handles:
 Data Ingestion & Cleaning: Reads matches.csv, parses dates, and handles multi-class targets (Win=2, Draw=1, Loss=0).
 
 Feature Engineering: Creates dynamic one-hot encoded variables (for venues and opponents).
