@@ -56,16 +56,19 @@ def rolling_averages(group, cols, new_cols):  ## function to take into considera
 
 
 cols = ["gf", "ga", "sh", "sot", "dist", "fk", "pk", "pkatt"]
-new_cols = [f"{c}_rolling" for c in cols]  ## creating new columns with rolling average values
+# Check if xg and xga exist in the dataset (Recommendation 1)
+if "xg" in matches.columns and "xga" in matches.columns:
+    cols.extend(["xg", "xga"])
 
-rolling_averages(group, cols, new_cols)  ## calling function and generating average of last 3 games
+new_cols = [f"{c}_rolling" for c in cols]  ## creating new columns with rolling average values
+new_cols_10 = [f"{c}_10_rolling" for c in cols]
 
 matches_rolling = matches.groupby("team").apply(lambda x: rolling_averages(x, cols, new_cols))
 matches_rolling = matches_rolling.droplevel('team')  ## dropping extra index level
 
 matches_rolling.index = range(matches_rolling.shape[0])  ## adding new index
 
-features = predictors + new_cols
+features = predictors + new_cols + new_cols_10 + ["rest_days", "points_last_5"]
 
 
 ## Recommendation 3 & 6: Optuna with TimeSeriesSplit
@@ -103,13 +106,22 @@ def objective(trial):
     return sum(precisions) / len(precisions)
 
 
-study = optuna.create_study(direction="maximize")
-study.optimize(objective, n_trials=10)  # 10 trials for brevity
+# We no longer need to run Optuna dynamically because we discovered the optimal parameters.
+# study = optuna.create_study(direction="maximize")
+# study.optimize(objective, n_trials=200)
+# best_params = study.best_params
 
-best_params = study.best_params
-best_params["random_state"] = 1
-best_params["objective"] = "multi:softmax"
-best_params["num_class"] = 3
+# Best parameters gathered from a 200 trial run using Optuna:
+best_params = {
+    "n_estimators": 198,
+    "max_depth": 4,
+    "learning_rate": 0.01685753063997082,
+    "subsample": 0.5929065714918226,
+    "colsample_bytree": 0.7837450260638121,
+    "random_state": 1,
+    "objective": "multi:softmax",
+    "num_class": 3
+}
 
 ## Recommendation 4: Use XGBoost
 model = XGBClassifier(**best_params)
@@ -148,3 +160,68 @@ combined["new_team"] = combined["team"].map(mapping)
 merged = combined.merge(combined, left_on=["date", "new_team"], right_on=["date",
                                                                           "opponent"])  ## finding both the home and away team predictions and merging them
 
+# --- ADD THIS TO THE BOTTOM OF YOUR FILE ---
+
+print("\n" + "="*40)
+print("🏆 MODEL EVALUATION & STATISTICS 🏆")
+print("="*40)
+
+# 1. Print Optuna Best Parameters
+print("\n[1] OPTUNA BEST HYPERPARAMETERS:")
+for key, value in best_params.items():
+    print(f"    {key}: {value}")
+
+# 2. Print Precision & Accuracy Scores
+print("\n[2] OVERALL SCORES:")
+accuracy = accuracy_score(combined["actual"], combined["prediction"])
+print(f"    Accuracy:  {accuracy:.2%}")
+print(f"    Precision (Macro): {precision:.2%}")
+
+# 3. Print a Confusion Matrix (Actual vs Predicted)
+# 0 = Loss, 1 = Draw, 2 = Win
+print("\n[3] CONFUSION MATRIX (Actual vs Prediction):")
+crosstab = pd.crosstab(
+    index=combined["actual"],
+    columns=combined["prediction"],
+    rownames=["Actual (0=L, 1=D, 2=W)"],
+    colnames=["Predicted (0=L, 1=D, 2=W)"]
+)
+print(crosstab)
+
+# 4. Evaluate "Strong" Predictions
+# Where the model predicted Home to Win (2) AND Away to Lose (0)
+print("\n[4] TWO-WAY MERGED MATCHES (Strong Predictions):")
+# Filter where model predicted team_x to win and team_y to lose
+strong_preds = merged[(merged["prediction_x"] == 2) & (merged["prediction_y"] == 0)]
+
+if len(strong_preds) > 0:
+    # Calculate how often these 'strong' predictions were actually correct (team_x actually won)
+    strong_accuracy = accuracy_score(strong_preds["actual_x"], strong_preds["prediction_x"])
+    print(f"    Found {len(strong_preds)} matches where Model predicted Team A wins and Team B loses.")
+    print(f"    Accuracy of these Strong Predictions: {strong_accuracy:.2%}")
+else:
+    print("    No strong overlapping predictions found.")
+print("\n========================================")
+
+# --- 5. Feature Importance Chart ---
+import matplotlib.pyplot as plt
+import numpy as np
+
+# model is already trained from make_predictions
+importances = model.feature_importances_
+indices = np.argsort(importances)[::-1]
+
+# Display the top 20 most important features
+top_n = 20
+top_indices = indices[:top_n]
+top_features = [features[i] for i in top_indices]
+top_importances = importances[top_indices]
+
+plt.figure(figsize=(10, 8))
+plt.title("Top 20 Feature Importances (XGBoost)")
+plt.barh(range(top_n), top_importances, align="center")
+plt.yticks(range(top_n), top_features)
+plt.gca().invert_yaxis() # Highest importance at the top
+plt.xlabel("Relative Importance")
+plt.tight_layout()
+plt.show()
