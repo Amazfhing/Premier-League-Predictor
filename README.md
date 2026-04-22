@@ -1,6 +1,7 @@
 # Premier-League-Predictor
 
 🛠️ Tech Stack
+
 Language: Python
 Data Manipulation: pandas (Core dataframe handling, merging, rolling time-window calculations)
 Machine Learning Core: scikit-learn (Metrics formatting, test/train splitting), xgboost (Advanced gradient-boosted decision trees algorithm)
@@ -8,6 +9,7 @@ Hyperparameter Tuning: optuna (Bayesian optimization framework)
 Data Visualization: matplotlib, numpy (Feature importance bar charts)
  
 📂 Project Files breakdown
+
 1. PL_Predictor.py (The Main Engine)
 This is the core pipeline of the project. It handles:
 Data Ingestion & Cleaning: Reads matches.csv, parses dates, and handles multi-class targets (Win=2, Draw=1, Loss=0).
@@ -20,7 +22,9 @@ Evaluation Dashboard: Outputs a concise console report showing overall accuracy,
 A standalone utility script that takes raw, messy seasonal data downloads from Football-Data.co.uk (e.g., E0_2021.csv, E0_2122.csv) and does the heavy lifting to combine them into cleaned_odds.csv. It actively scans and checks for team-naming mismatches between the odds data and the FBRef match data, preventing silent merge failures in the main engine.
  
 📊 How the Metrics Were Utilized
+
 The model relies entirely on Historical Context and Market Intelligence rather than arbitrary guesses.
+
 1. Form & Momentum Metrics (The "Past")
 Rolling Averages (gf_10_rolling, xga_10_rolling): Instead of looking at a team's total points for the year, the model calculates rolling 3-game and 10-game averages for goals, shots, expected goals (xG), and points. This teaches the model about "recent form" (e.g., did they just score 10 goals in 3 games, or are they slumping?).
 Rest Days (rest_days): Uses dataframe .diff() to count the days elapsed since a team's previous game to detect fatigue (like a team playing after a short Wednesday European turnaround).
