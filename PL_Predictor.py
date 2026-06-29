@@ -11,7 +11,6 @@ import numpy as np
 
 matches["date"] = pd.to_datetime(matches["date"])
 
-## --- BETTING ODDS ---
 odds = pd.read_csv("cleaned_odds.csv")
 odds["Date"] = pd.to_datetime(odds["Date"])
 # Map the mismatched names to match FBRef matches.csv naming
@@ -42,17 +41,15 @@ team_odds = pd.concat([home_odds, away_odds])
 
 matches = matches.merge(team_odds, on=["date", "team"], how="left")
 
-# Drop rows that couldn't find a matching odds line
 matches = matches.dropna(subset=["team_odds", "draw_odds", "opp_odds"])
 
-## Recommendation 5: Multi-Class Target (Win:2, Draw:1, Loss:0)
 result_map = {"L": 0, "D": 1, "W": 2}
 matches["target"] = matches["result"].map(result_map)
 
-## Add Points column (Win=3, Draw=1, Loss=0)
+# Add Points column (Win=3, Draw=1, Loss=0)
 matches["points"] = matches["target"].map({2: 3, 1: 1, 0: 0})
 
-## Recommendation 2: One-Hot Encoding for categorical features
+# One-Hot Encoding for categorical features
 matches = pd.concat([matches, pd.get_dummies(matches[["venue", "opponent"]], drop_first=True)], axis=1)
 
 matches["hour"] = matches["time"].str.replace(":.+", "", regex=True).astype(
@@ -67,8 +64,8 @@ grouped_matches = matches.groupby("team")
 group = grouped_matches.get_group("Manchester United").sort_values("date")
 
 
-def rolling_averages(group, cols, new_cols):  ## function to take into consideration form of a team
-    group = group.sort_values("date")  ## sorting games by date
+def rolling_averages(group, cols, new_cols):  # function to take into consideration form of a team
+    group = group.sort_values("date")
     
     # 1. Rest Days (days since last match)
     group["rest_days"] = group["date"].diff().dt.days
@@ -84,29 +81,29 @@ def rolling_averages(group, cols, new_cols):  ## function to take into considera
     # 4. Rolling Points (sum of points over last 5 games)
     group["points_last_5"] = group["points"].rolling(5, closed='left').sum()
     
-    # Drop missing values ensuring we have all features for the model
+
     group = group.dropna(subset=new_cols + new_cols_10 + ["rest_days", "points_last_5"])
     return group
 
 
 cols = ["gf", "ga", "sh", "sot", "dist", "fk", "pk", "pkatt"]
-# Check if xg and xga exist in the dataset (Recommendation 1)
+
 if "xg" in matches.columns and "xga" in matches.columns:
     cols.extend(["xg", "xga"])
 
-new_cols = [f"{c}_rolling" for c in cols]  ## creating new columns with rolling average values
+new_cols = [f"{c}_rolling" for c in cols]  # creating new columns with rolling average values
 new_cols_10 = [f"{c}_10_rolling" for c in cols]
 
 matches_rolling = matches.groupby("team").apply(lambda x: rolling_averages(x, cols, new_cols))
-matches_rolling = matches_rolling.droplevel('team')  ## dropping extra index level
+matches_rolling = matches_rolling.droplevel('team')
 
-matches_rolling.index = range(matches_rolling.shape[0])  ## adding new index
+matches_rolling.index = range(matches_rolling.shape[0])
 
 features = predictors + new_cols + new_cols_10 + ["rest_days", "points_last_5"]
 
 if "team_odds" in matches_rolling.columns:
     features.extend(["team_odds", "draw_odds", "opp_odds"])
-# Uncomment the block of code below when we want to re-tune the hyper-parameters computationally again
+# Uncomment the block of code below when we want to re-tune the hyper-parameters again
 # def objective(trial):
 #     param = {
 #         "n_estimators": trial.suggest_int("n_estimators", 50, 200),
@@ -118,12 +115,12 @@ if "team_odds" in matches_rolling.columns:
 #         "objective": "multi:softmax",
 #         "num_class": 3
 #     }
-#     xgb = XGBClassifier(**param)
+#     xgb = XGBClassifier(**param) #Feeds the parameters into the actual XGBoost model
 #
 #     tscv = TimeSeriesSplit(n_splits=3)
 #     precisions = []
 #
-#     data = matches_rolling.sort_values("date")
+#     data = matches_rolling[matches_rolling["date"] < '2022-01-01'].sort_values("date")
 #     X = data[features]
 #     y = data["target"]
 #
@@ -144,7 +141,7 @@ if "team_odds" in matches_rolling.columns:
 # best_params["objective"] = "multi:softmax"
 # best_params["num_class"] = 3
 
-# Best parameters gathered from previous Optuna runs:
+# Best parameters gathered from previous Optuna runs
 best_params = {
     "n_estimators": 179,
     "max_depth": 3,
@@ -158,14 +155,14 @@ best_params = {
 
 model = XGBClassifier(**best_params)
 
-def make_predictions(data, predictors):  ## making the predictions
+def make_predictions(data, predictors):
     train = data[data["date"] < '2022-01-01']
     test = data[data["date"] >= '2022-01-01']
     model.fit(train[predictors], train["target"])
-    preds = model.predict(test[predictors])  ##making prediction
+    preds = model.predict(test[predictors])
     combined = pd.DataFrame(dict(actual=test["target"], prediction=preds), index=test.index)
     precision = precision_score(test["target"], preds, average="macro", zero_division=0)
-    return combined, precision  ## returning the values for the prediction
+    return combined, precision
 
 
 combined, precision = make_predictions(matches_rolling, features)
@@ -173,8 +170,8 @@ combined, precision = make_predictions(matches_rolling, features)
 combined = combined.merge(matches_rolling[["date", "team", "opponent", "result"]], left_index=True, right_index=True)
 
 
-class MissingDict(dict):  ## creating a class that inherits from the dictionary class
-    __missing__ = lambda self, key: key  ## in case a team name is missing
+class MissingDict(dict):
+    __missing__ = lambda self, key: key  # case when a team name is missing
 
 
 map_values = {
@@ -189,13 +186,12 @@ mapping = MissingDict(**map_values)
 combined["new_team"] = combined["team"].map(mapping)
 
 merged = combined.merge(combined, left_on=["date", "new_team"], right_on=["date", "opponent"])
-
-# --- MODEL EVALUATION & STATISTICS ---
 accuracy = accuracy_score(combined["actual"], combined["prediction"])
 
-print("\n--- MODEL EVALUATION ---")
+print("\n Model Evaluation: ")
 print(f"Accuracy:  {accuracy:.2%} | Precision: {precision:.2%}")
 print("\nConfusion Matrix (0=L, 1=D, 2=W):")
+
 print(pd.crosstab(
     index=combined["actual"],
     columns=combined["prediction"],
@@ -205,11 +201,17 @@ print(pd.crosstab(
 
 # Evaluate "Strong" Predictions
 strong_preds = merged[(merged["prediction_x"] == 2) & (merged["prediction_y"] == 0)]
+
+strong_draws = merged[(merged["prediction_x"] == 1) & (merged["prediction_y"] == 1)]
+
 if not strong_preds.empty:
     strong_accuracy = accuracy_score(strong_preds["actual_x"], strong_preds["prediction_x"])
     print(f"\nStrong Predictions (Both Models Agree): {len(strong_preds)} matches | Accuracy: {strong_accuracy:.2%}")
 else:
     print("\nStrong Predictions: 0 matches found")
+
+if not strong_draws.empty:
+    print(f"Strong Draws Accuracy: {accuracy_score(strong_draws['actual_x'], strong_draws['prediction_x']):.2%}")
 
 # --- Feature Importance Chart ---
 importances = model.feature_importances_
