@@ -5,7 +5,7 @@ matches = pd.read_csv("matches.csv", index_col=0)
 # import optuna
 from xgboost import XGBClassifier
 # from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import accuracy_score, precision_score
+from sklearn.metrics import accuracy_score, precision_score, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -190,14 +190,18 @@ accuracy = accuracy_score(combined["actual"], combined["prediction"])
 
 print("\n Model Evaluation: ")
 print(f"Accuracy:  {accuracy:.2%} | Precision: {precision:.2%}")
-print("\nConfusion Matrix (0=L, 1=D, 2=W):")
+print("\nConfusion Matrix (0=Loss, 1=Draw, 2=Win):")
 
-print(pd.crosstab(
-    index=combined["actual"],
-    columns=combined["prediction"],
-    rownames=["Actual"],
-    colnames=["Pred"]
-))
+fig, ax = plt.subplots(figsize=(8, 6))
+ConfusionMatrixDisplay.from_predictions(
+    combined["actual"],
+    combined["prediction"],
+    display_labels=["Loss", "Draw", "Win"],
+    cmap="Blues",
+    ax=ax
+)
+plt.title("Confusion Matrix - Premier League Predictions")
+plt.tight_layout()
 
 # Evaluate "Strong" Predictions
 strong_preds = merged[(merged["prediction_x"] == 2) & (merged["prediction_y"] == 0)]
