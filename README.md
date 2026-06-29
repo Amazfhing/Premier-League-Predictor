@@ -1,47 +1,252 @@
-# Premier-League-Predictor
+# Premier League Predictor
 
-🛠️ Tech Stack
+A Python machine-learning project that predicts Premier League match outcomes using historical match statistics, rolling team-form features, and Bet365 betting odds.
 
-Language: Python
+The project trains an XGBoost multiclass classifier to predict whether a team will **win**, **draw**, or **lose** a match. It combines FBRef-style match data with Football-Data.co.uk odds data, then evaluates the model with accuracy, macro precision, a confusion matrix, strong-prediction summaries, and feature-importance visualizations.
 
-Data Manipulation: pandas (Core dataframe handling, merging, rolling time-window calculations)
+## Table of Contents
 
-Machine Learning Core: scikit-learn (Metrics formatting, test/train splitting), xgboost (Advanced gradient-boosted decision trees algorithm)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Data Sources and Inputs](#data-sources-and-inputs)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Model Pipeline](#model-pipeline)
+- [Results and Evaluation](#results-and-evaluation)
+- [Troubleshooting](#troubleshooting)
+- [Future Improvements](#future-improvements)
 
-Hyperparameter Tuning: optuna (Bayesian optimization framework)
+## Project Overview
 
-Data Visualization: matplotlib, numpy (Feature importance bar charts)
- 
-📂 Project Files breakdown
+Football results are noisy, but teams still carry measurable signals into each fixture: recent scoring form, defensive performance, rest days, venue, opponent strength, and betting-market expectations.
 
-1. PL_Predictor.py (The Main Engine)
-This is the core pipeline of the project.
+This project uses those signals to build a time-aware Premier League prediction pipeline:
 
-It handles:
+1. Clean and merge raw betting odds files.
+2. Normalize team names between odds data and match data.
+3. Engineer rolling form features for each team.
+4. Train an XGBoost classifier on historical fixtures.
+5. Evaluate predictions on later matches using a date-based train/test split.
 
-Data Ingestion & Cleaning: Reads matches.csv, parses dates, and handles multi-class targets (Win=2, Draw=1, Loss=0).
+The target classes are encoded as:
 
-Feature Engineering: Creates dynamic one-hot encoded variables (for venues and opponents).
+| Result | Class |
+| --- | ---: |
+| Loss | 0 |
+| Draw | 1 |
+| Win | 2 |
 
-Time-Series Logic: Groups data by team and injects "Form" metrics (3-game/10-game rolling averages) to simulate historical momentum.
+## Features
 
-Odds Integration: Intelligently merges in the normalized Vegas odds.
+- **Rolling team form**: 3-match and 10-match rolling averages for goals, shots, expected goals, and related match stats.
+- **Rest-day tracking**: Calculates days since each team's previous match to account for fatigue and schedule congestion.
+- **Venue and opponent encoding**: Converts home/away venue and opponent names into model-ready categorical features.
+- **Bet365 odds integration**: Adds home, draw, and away odds as market-informed prediction features.
+- **Time-aware evaluation**: Uses matches before `2022-01-01` for training and later matches for testing.
+- **XGBoost classification**: Predicts Win/Draw/Loss outcomes with tuned gradient-boosted trees.
+- **Model reporting**: Prints accuracy, macro precision, confusion matrix, strong predictions, and feature importances.
 
-Model Training & Execution: Uses a pre-optimized XGBClassifier to predict future match outcomes on sequential test data (post-2022).
+## Tech Stack
 
-Evaluation Dashboard: Outputs a concise console report showing overall accuracy, precision, a Confusion Matrix, and isolating high-confidence "Strong Predictions" where both Home and Away models agree, followed by a Matplotlib bar chart showing exactly which features the model values most.
+| Area | Tools |
+| --- | --- |
+| Language | Python |
+| Data processing | pandas, numpy |
+| Machine learning | scikit-learn, XGBoost |
+| Hyperparameter tuning | Optuna |
+| Visualization | matplotlib |
 
-2. MergeOdds.py (The Data Pre-processor)
-A standalone utility script that takes raw, messy seasonal data downloads from Football-Data.co.uk (e.g., E0_2021.csv, E0_2122.csv) and does the heavy lifting to combine them into cleaned_odds.csv. It actively scans and checks for team-naming mismatches between the odds data and the FBRef match data, preventing silent merge failures in the main engine.
- 
-📊 How the Metrics Were Utilized
+## Project Structure
 
-The model relies entirely on Historical Context and Market Intelligence rather than arbitrary guesses.
+```text
+Premier-League-Predictor/
+├── PL_Predictor.py     # Main model pipeline and evaluation script
+├── MergeOdds.py        # Preprocesses raw odds files into cleaned_odds.csv
+├── matches.csv         # FBRef-style match/team data
+├── E0_2021.csv         # Raw Football-Data.co.uk odds file
+├── E0_2122.csv         # Raw Football-Data.co.uk odds file
+├── cleaned_odds.csv    # Generated odds dataset consumed by PL_Predictor.py
+└── README.md
+```
 
-1. Form & Momentum Metrics (The "Past")
-Rolling Averages (gf_10_rolling, xga_10_rolling): Instead of looking at a team's total points for the year, the model calculates rolling 3-game and 10-game averages for goals, shots, expected goals (xG), and points. This teaches the model about "recent form" (e.g., did they just score 10 goals in 3 games, or are they slumping?).
-Rest Days (rest_days): Uses dataframe .diff() to count the days elapsed since a team's previous game to detect fatigue (like a team playing after a short Wednesday European turnaround).
-2. Categorical Logic
-Opponent & Venue (venue_Home, opponent_Manchester City): One-hot encoded booleans that teach the model the inherent difficulties of the league. It recognizes that playing away against Man City requires a different predictive baseline than playing at home against Norwich.
-3. Vegas Betting Markets (The "Market Intelligence")
-Odds (team_odds, opp_odds, draw_odds): We integrated the closing lines from Bet365. Vegas bookmakers process infinite unquantifiable real-world data (injuries, manager firings, morale) to set lines. By passing these directly into the XGBoost algorithm, it essentially acts as an expert "baseline cheat sheet", elevating the model's accuracy up to ~57% and allowing it to identify high-confidence (Strong Prediction) disparities efficiently.
+> **Note:** The scripts use relative CSV paths, so run all commands from the repository root.
+
+## Data Sources and Inputs
+
+### `matches.csv`
+
+The main match dataset. It follows an FBRef-style format and contains team-level rows for Premier League fixtures, including columns such as:
+
+- `date`
+- `time`
+- `venue`
+- `result`
+- `team`
+- `opponent`
+- `gf`, `ga`
+- `sh`, `sot`
+- `dist`, `fk`, `pk`, `pkatt`
+- optional expected-goals columns such as `xg` and `xga`
+
+### `E0_2021.csv` and `E0_2122.csv`
+
+Raw Football-Data.co.uk season files containing match results and betting odds. `MergeOdds.py` extracts the Bet365 columns:
+
+- `B365H` — home win odds
+- `B365D` — draw odds
+- `B365A` — away win odds
+
+### `cleaned_odds.csv`
+
+Generated by `MergeOdds.py`. This is the cleaned odds file used by `PL_Predictor.py` during model training and evaluation.
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd Premier-League-Predictor
+```
+
+### 2. Create and activate a virtual environment
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+On macOS/Linux:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+This repository does not currently include a `requirements.txt`, so install the runtime dependencies directly:
+
+```bash
+python -m pip install pandas numpy matplotlib scikit-learn xgboost optuna
+```
+
+## Usage
+
+Run commands from the repository root.
+
+### 1. Regenerate cleaned odds data
+
+```powershell
+.\.venv\Scripts\python.exe MergeOdds.py
+```
+
+This script:
+
+- reads `E0_2021.csv` and `E0_2122.csv`,
+- keeps the required Bet365 odds columns,
+- writes `cleaned_odds.csv`,
+- prints team-name mismatches between odds data and `matches.csv`.
+
+Run this whenever the raw odds files change or new seasons are added.
+
+### 2. Train and evaluate the predictor
+
+```powershell
+.\.venv\Scripts\python.exe PL_Predictor.py
+```
+
+This script:
+
+- loads `matches.csv` and `cleaned_odds.csv`,
+- normalizes team names,
+- engineers model features,
+- trains the XGBoost classifier,
+- prints evaluation metrics,
+- identifies strong predictions,
+- displays a feature-importance chart.
+
+## Model Pipeline
+
+`PL_Predictor.py` runs the full prediction workflow:
+
+1. **Load data**
+   - Reads match data from `matches.csv`.
+   - Reads cleaned odds from `cleaned_odds.csv`.
+
+2. **Clean and normalize**
+   - Parses match dates.
+   - Maps Football-Data team names to the FBRef-style names used in `matches.csv`.
+   - Converts odds into team-perspective rows so each fixture can be matched from both sides.
+
+3. **Feature engineering**
+   - Encodes match result labels as `L=0`, `D=1`, and `W=2`.
+   - Adds venue and opponent dummy variables.
+   - Calculates rest days per team.
+   - Builds rolling 3-match and 10-match performance averages.
+   - Adds recent points form with `points_last_5`.
+   - Includes betting odds features when available.
+
+4. **Train/test split**
+   - Uses a chronological split rather than a random split.
+   - Trains on matches before `2022-01-01`.
+   - Tests on matches from `2022-01-01` onward.
+
+5. **Model training**
+   - Trains an `XGBClassifier` using fixed Optuna-derived hyperparameters.
+
+6. **Evaluation**
+   - Reports accuracy and macro precision.
+   - Prints a confusion matrix.
+   - Compares home and away perspectives to highlight strong predictions.
+   - Displays the top feature importances using matplotlib.
+
+## Results and Evaluation
+
+The current pipeline reaches approximately **57% accuracy** with the integrated match-form and betting-odds features.
+
+The evaluation output includes:
+
+- **Accuracy**: overall percentage of correct predictions.
+- **Macro precision**: precision averaged across Win/Draw/Loss classes.
+- **Confusion matrix**: breakdown of predicted vs actual outcomes.
+- **Strong predictions**: fixtures where the model's home-team and away-team perspectives agree.
+- **Feature importance chart**: the top model features ranked by XGBoost importance.
+
+Because football is highly variable and draws are difficult to predict, accuracy should be interpreted alongside the confusion matrix and strong-prediction subset.
+
+## Troubleshooting
+
+### `cleaned_odds.csv` is missing
+
+Run:
+
+```powershell
+.\.venv\Scripts\python.exe MergeOdds.py
+```
+
+### Fewer rows than expected after merging odds
+
+Team names may not match between the odds files and `matches.csv`. Check the mismatch output from `MergeOdds.py`, then update the team-name mapping in `PL_Predictor.py` if new clubs or seasons are added.
+
+### File-not-found errors
+
+Run scripts from the repository root. The scripts expect CSV files to be available through relative paths.
+
+### Feature chart does not appear
+
+`PL_Predictor.py` opens a matplotlib chart after printing metrics. If running in a headless terminal or remote environment, configure a compatible matplotlib backend or save the figure instead.
+
+## Future Improvements
+
+- Add a `requirements.txt` or `pyproject.toml` for reproducible installs.
+- Refactor top-level scripts into reusable functions.
+- Add an `if __name__ == "__main__":` guard to make the scripts easier to import and test.
+- Add automated tests for data cleaning, team-name normalization, and feature engineering.
+- Include more seasons of match and odds data.
+- Automate Optuna tuning and compare tuned models over multiple time-based validation splits.
+- Save trained models and evaluation artifacts for easier experiment tracking.
