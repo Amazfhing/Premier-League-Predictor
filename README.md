@@ -129,10 +129,10 @@ source .venv/bin/activate
 
 ### 3. Install dependencies
 
-This repository does not currently include a `requirements.txt`, so install the runtime dependencies directly:
+Install the runtime dependencies from `requirements.txt`:
 
 ```bash
-python -m pip install pandas numpy matplotlib scikit-learn xgboost optuna
+python -m pip install -r requirements.txt
 ```
 
 ## Usage
@@ -243,9 +243,6 @@ Run scripts from the repository root. The scripts expect CSV files to be availab
 
 ## Future Improvements
 
-- Add a `requirements.txt` or `pyproject.toml` for reproducible installs.
-- Refactor top-level scripts into reusable functions.
-- Add an `if __name__ == "__main__":` guard to make the scripts easier to import and test.
 - Add automated tests for data cleaning, team-name normalization, and feature engineering.
 - Include more seasons of match and odds data.
 - Automate Optuna tuning and compare tuned models over multiple time-based validation splits.
