@@ -1,0 +1,761 @@
+date,time,round,day,venue,result,gf,ga,opponent,xg,xga,poss,sot,team
+2025-08-15,21:00,,Fri,Home,W,4,2,Bournemouth,2.21,1.7,61,10,Liverpool
+2025-08-15,21:00,,Fri,Away,L,2,4,Liverpool,1.7,2.21,39,3,Bournemouth
+2025-08-16,13:30,,Sat,Home,D,0,0,Newcastle United,0.2,1.44,40,3,Aston Villa
+2025-08-16,13:30,,Sat,Away,D,0,0,Aston Villa,1.44,0.2,60,3,Newcastle United
+2025-08-16,16:00,,Sat,Home,D,1,1,Fulham,1.47,0.76,50,4,Brighton
+2025-08-16,16:00,,Sat,Away,D,1,1,Brighton,0.76,1.47,50,2,Fulham
+2025-08-16,16:00,,Sat,Home,W,3,0,West Ham,0.68,0.56,37,5,Sunderland
+2025-08-16,16:00,,Sat,Away,L,0,3,Sunderland,0.56,0.68,63,4,West Ham
+2025-08-16,16:00,,Sat,Home,W,3,0,Burnley,2.32,0.93,67,6,Tottenham
+2025-08-16,16:00,,Sat,Away,L,0,3,Tottenham,0.93,2.32,33,4,Burnley
+2025-08-16,18:30,,Sat,Home,L,0,4,Manchester City,0.56,2.46,42,3,Wolves
+2025-08-16,18:30,,Sat,Away,W,4,0,Wolves,2.46,0.56,58,4,Manchester City
+2025-08-17,15:00,,Sun,Home,D,0,0,Crystal Palace,1.61,0.66,71,3,Chelsea
+2025-08-17,15:00,,Sun,Away,D,0,0,Chelsea,0.66,1.61,29,4,Crystal Palace
+2025-08-17,15:00,,Sun,Home,W,3,1,Brentford,1.86,1.5,55,5,Nottingham
+2025-08-17,15:00,,Sun,Away,L,1,3,Nottingham,1.5,1.86,45,3,Brentford
+2025-08-17,17:30,,Sun,Home,L,0,1,Arsenal,1.52,1.3,61,7,Manchester Utd
+2025-08-17,17:30,,Sun,Away,W,1,0,Manchester Utd,1.3,1.52,39,3,Arsenal
+2025-08-18,21:00,,Mon,Home,W,1,0,Everton,2.14,0.8,54,3,Leeds
+2025-08-18,21:00,,Mon,Away,L,0,1,Leeds,0.8,2.14,46,1,Everton
+2025-08-22,21:00,,Fri,Home,L,1,5,Chelsea,0.73,2.74,41,4,West Ham
+2025-08-22,21:00,,Fri,Away,W,5,1,West Ham,2.74,0.73,59,7,Chelsea
+2025-08-23,13:30,,Sat,Home,L,0,2,Tottenham,1.55,1.11,61,4,Manchester City
+2025-08-23,13:30,,Sat,Away,W,2,0,Manchester City,1.11,1.55,39,5,Tottenham
+2025-08-23,16:00,,Sat,Home,W,1,0,Wolves,1.29,0.47,59,4,Bournemouth
+2025-08-23,16:00,,Sat,Away,L,0,1,Bournemouth,0.47,1.29,41,1,Wolves
+2025-08-23,16:00,,Sat,Home,W,1,0,Aston Villa,1.27,1.23,24,2,Brentford
+2025-08-23,16:00,,Sat,Away,L,0,1,Brentford,1.23,1.27,76,2,Aston Villa
+2025-08-23,16:00,,Sat,Home,W,2,0,Sunderland,1.0,0.78,42,2,Burnley
+2025-08-23,16:00,,Sat,Away,L,0,2,Burnley,0.78,1.0,58,1,Sunderland
+2025-08-23,18:30,,Sat,Home,W,5,0,Leeds,2.88,0.17,68,5,Arsenal
+2025-08-23,18:30,,Sat,Away,L,0,5,Arsenal,0.17,2.88,32,1,Leeds
+2025-08-24,15:00,,Sun,Home,D,1,1,Nottingham,1.1,0.93,42,4,Crystal Palace
+2025-08-24,15:00,,Sun,Away,D,1,1,Crystal Palace,0.93,1.1,58,1,Nottingham
+2025-08-24,15:00,,Sun,Home,W,2,0,Brighton,1.59,2.44,42,3,Everton
+2025-08-24,15:00,,Sun,Away,L,0,2,Everton,2.44,1.59,58,4,Brighton
+2025-08-24,17:30,,Sun,Home,D,1,1,Manchester Utd,1.76,1.62,52,4,Fulham
+2025-08-24,17:30,,Sun,Away,D,1,1,Fulham,1.62,1.76,48,3,Manchester Utd
+2025-08-25,21:00,,Mon,Home,L,2,3,Liverpool,0.98,0.69,38,3,Newcastle United
+2025-08-25,21:00,,Mon,Away,W,3,2,Newcastle United,0.69,0.98,62,4,Liverpool
+2025-08-30,13:30,,Sat,Home,W,2,0,Fulham,2.35,1.02,54,6,Chelsea
+2025-08-30,13:30,,Sat,Away,L,0,2,Chelsea,1.02,2.35,46,3,Fulham
+2025-08-30,16:00,,Sat,Home,W,3,2,Burnley,3.53,1.2,62,6,Manchester Utd
+2025-08-30,16:00,,Sat,Away,L,2,3,Manchester Utd,1.2,3.53,38,3,Burnley
+2025-08-30,16:00,,Sat,Home,W,2,1,Brentford,1.54,1.19,54,3,Sunderland
+2025-08-30,16:00,,Sat,Away,L,1,2,Sunderland,1.19,1.54,46,4,Brentford
+2025-08-30,16:00,,Sat,Home,L,0,1,Bournemouth,0.19,1.59,61,1,Tottenham
+2025-08-30,16:00,,Sat,Away,W,1,0,Tottenham,1.59,0.19,39,6,Bournemouth
+2025-08-30,16:00,,Sat,Home,L,2,3,Everton,1.11,1.93,58,4,Wolves
+2025-08-30,16:00,,Sat,Away,W,3,2,Wolves,1.93,1.11,42,4,Everton
+2025-08-30,18:30,,Sat,Home,D,0,0,Newcastle United,0.69,0.46,43,1,Leeds
+2025-08-30,18:30,,Sat,Away,D,0,0,Leeds,0.46,0.69,57,2,Newcastle United
+2025-08-31,15:00,,Sun,Home,W,2,1,Manchester City,2.29,1.82,36,7,Brighton
+2025-08-31,15:00,,Sun,Away,L,1,2,Brighton,1.82,2.29,64,3,Manchester City
+2025-08-31,15:00,,Sun,Home,L,0,3,West Ham,0.73,2.42,58,3,Nottingham
+2025-08-31,15:00,,Sun,Away,W,3,0,Nottingham,2.42,0.73,42,8,West Ham
+2025-08-31,17:30,,Sun,Home,W,1,0,Arsenal,0.53,0.49,53,3,Liverpool
+2025-08-31,17:30,,Sun,Away,L,0,1,Liverpool,0.49,0.53,47,1,Arsenal
+2025-08-31,20:00,,Sun,Home,L,0,3,Crystal Palace,1.14,2.65,58,4,Aston Villa
+2025-08-31,20:00,,Sun,Away,W,3,0,Aston Villa,2.65,1.14,42,4,Crystal Palace
+2025-09-13,13:30,,Sat,Home,W,3,0,Nottingham,1.84,0.2,54,5,Arsenal
+2025-09-13,13:30,,Sat,Away,L,0,3,Arsenal,0.2,1.84,46,1,Nottingham
+2025-09-13,16:00,,Sat,Home,W,2,1,Brighton,1.45,0.62,51,5,Bournemouth
+2025-09-13,16:00,,Sat,Away,L,1,2,Bournemouth,0.62,1.45,49,2,Brighton
+2025-09-13,16:00,,Sat,Home,D,0,0,Sunderland,1.77,0.36,56,6,Crystal Palace
+2025-09-13,16:00,,Sat,Away,D,0,0,Crystal Palace,0.36,1.77,44,0,Sunderland
+2025-09-13,16:00,,Sat,Home,D,0,0,Aston Villa,2.08,0.54,48,2,Everton
+2025-09-13,16:00,,Sat,Away,D,0,0,Everton,0.54,2.08,52,1,Aston Villa
+2025-09-13,16:00,,Sat,Home,W,1,0,Leeds,0.85,0.79,54,3,Fulham
+2025-09-13,16:00,,Sat,Away,L,0,1,Fulham,0.79,0.85,46,3,Leeds
+2025-09-13,16:00,,Sat,Home,W,1,0,Wolves,1.56,0.5,57,4,Newcastle United
+2025-09-13,16:00,,Sat,Away,L,0,1,Newcastle United,0.5,1.56,43,3,Wolves
+2025-09-13,18:30,,Sat,Home,L,0,3,Tottenham,0.6,1.29,36,4,West Ham
+2025-09-13,18:30,,Sat,Away,W,3,0,West Ham,1.29,0.6,64,5,Tottenham
+2025-09-13,21:00,,Sat,Home,D,2,2,Chelsea,1.42,1.25,34,4,Brentford
+2025-09-13,21:00,,Sat,Away,D,2,2,Brentford,1.25,1.42,66,6,Chelsea
+2025-09-14,15:00,,Sun,Home,L,0,1,Liverpool,0.13,2.65,19,0,Burnley
+2025-09-14,15:00,,Sun,Away,W,1,0,Burnley,2.65,0.13,81,4,Liverpool
+2025-09-14,17:30,,Sun,Home,W,3,0,Manchester Utd,2.63,1.52,45,6,Manchester City
+2025-09-14,17:30,,Sun,Away,L,0,3,Manchester City,1.52,2.63,55,2,Manchester Utd
+2025-09-20,13:30,,Sat,Home,W,2,1,Everton,0.9,0.71,57,3,Liverpool
+2025-09-20,13:30,,Sat,Away,L,1,2,Liverpool,0.71,0.9,43,2,Everton
+2025-09-20,16:00,,Sat,Home,D,2,2,Tottenham,1.32,1.22,36,4,Brighton
+2025-09-20,16:00,,Sat,Away,D,2,2,Brighton,1.22,1.32,64,3,Tottenham
+2025-09-20,16:00,,Sat,Home,D,1,1,Nottingham,0.85,1.09,37,5,Burnley
+2025-09-20,16:00,,Sat,Away,D,1,1,Burnley,1.09,0.85,63,8,Nottingham
+2025-09-20,16:00,,Sat,Home,L,1,2,Crystal Palace,0.67,2.31,57,3,West Ham
+2025-09-20,16:00,,Sat,Away,W,2,1,West Ham,2.31,0.67,43,3,Crystal Palace
+2025-09-20,16:00,,Sat,Home,L,1,3,Leeds,1.79,0.49,56,6,Wolves
+2025-09-20,16:00,,Sat,Away,W,3,1,Wolves,0.49,1.79,44,4,Leeds
+2025-09-20,18:30,,Sat,Home,W,2,1,Chelsea,1.84,0.42,41,4,Manchester Utd
+2025-09-20,18:30,,Sat,Away,L,1,2,Manchester Utd,0.42,1.84,59,1,Chelsea
+2025-09-20,21:00,,Sat,Home,W,3,1,Brentford,1.0,0.6,53,3,Fulham
+2025-09-20,21:00,,Sat,Away,L,1,3,Fulham,0.6,1.0,47,3,Brentford
+2025-09-21,15:00,,Sun,Home,D,0,0,Newcastle United,0.46,0.14,56,2,Bournemouth
+2025-09-21,15:00,,Sun,Away,D,0,0,Bournemouth,0.14,0.46,44,1,Newcastle United
+2025-09-21,15:00,,Sun,Home,D,1,1,Aston Villa,1.04,0.79,29,4,Sunderland
+2025-09-21,15:00,,Sun,Away,D,1,1,Sunderland,0.79,1.04,71,2,Aston Villa
+2025-09-21,17:30,,Sun,Home,D,1,1,Manchester City,0.88,0.87,67,3,Arsenal
+2025-09-21,17:30,,Sun,Away,D,1,1,Arsenal,0.87,0.88,33,3,Manchester City
+2025-09-27,13:30,,Sat,Home,W,3,1,Manchester Utd,1.99,2.03,44,8,Brentford
+2025-09-27,13:30,,Sat,Away,L,1,3,Brentford,2.03,1.99,56,6,Manchester Utd
+2025-09-27,16:00,,Sat,Home,L,1,3,Brighton,1.81,2.29,59,3,Chelsea
+2025-09-27,16:00,,Sat,Away,W,3,1,Chelsea,2.29,1.81,41,3,Brighton
+2025-09-27,16:00,,Sat,Home,W,2,1,Liverpool,2.92,2.14,28,7,Crystal Palace
+2025-09-27,16:00,,Sat,Away,L,1,2,Crystal Palace,2.14,2.92,72,4,Liverpool
+2025-09-27,16:00,,Sat,Home,D,2,2,Bournemouth,1.84,0.82,41,8,Leeds
+2025-09-27,16:00,,Sat,Away,D,2,2,Leeds,0.82,1.84,59,5,Bournemouth
+2025-09-27,16:00,,Sat,Home,W,5,1,Burnley,2.03,0.41,68,8,Manchester City
+2025-09-27,16:00,,Sat,Away,L,1,5,Manchester City,0.41,2.03,32,2,Burnley
+2025-09-27,18:30,,Sat,Home,L,0,1,Sunderland,1.65,1.19,65,6,Nottingham
+2025-09-27,18:30,,Sat,Away,W,1,0,Nottingham,1.19,1.65,35,3,Sunderland
+2025-09-27,21:00,,Sat,Home,D,1,1,Wolves,0.87,1.15,51,3,Tottenham
+2025-09-27,21:00,,Sat,Away,D,1,1,Tottenham,1.15,0.87,49,3,Wolves
+2025-09-28,15:00,,Sun,Home,W,3,1,Fulham,1.11,0.92,48,4,Aston Villa
+2025-09-28,15:00,,Sun,Away,L,1,3,Aston Villa,0.92,1.11,52,4,Fulham
+2025-09-28,17:30,,Sun,Home,L,1,2,Arsenal,0.61,2.05,37,3,Newcastle United
+2025-09-28,17:30,,Sun,Away,W,2,1,Newcastle United,2.05,0.61,63,7,Arsenal
+2025-09-29,21:00,,Mon,Home,D,1,1,West Ham,0.74,1.19,52,6,Everton
+2025-09-29,21:00,,Mon,Away,D,1,1,Everton,1.19,0.74,48,3,West Ham
+2025-10-03,21:00,,Fri,Home,W,3,1,Fulham,1.12,0.89,54,6,Bournemouth
+2025-10-03,21:00,,Fri,Away,L,1,3,Bournemouth,0.89,1.12,46,4,Fulham
+2025-10-04,13:30,,Sat,Home,L,1,2,Tottenham,1.68,0.53,56,4,Leeds
+2025-10-04,13:30,,Sat,Away,W,2,1,Leeds,0.53,1.68,44,3,Tottenham
+2025-10-04,16:00,,Sat,Home,W,2,0,West Ham,2.78,0.49,68,5,Arsenal
+2025-10-04,16:00,,Sat,Away,L,0,2,Arsenal,0.49,2.78,32,0,West Ham
+2025-10-04,16:00,,Sat,Home,W,2,0,Sunderland,1.88,0.71,51,6,Manchester Utd
+2025-10-04,16:00,,Sat,Away,L,0,2,Manchester Utd,0.71,1.88,49,3,Sunderland
+2025-10-04,18:30,,Sat,Home,W,2,1,Liverpool,1.0,1.94,53,6,Chelsea
+2025-10-04,18:30,,Sat,Away,L,1,2,Chelsea,1.94,1.0,47,2,Liverpool
+2025-10-05,15:00,,Sun,Home,W,2,1,Burnley,1.16,0.4,55,7,Aston Villa
+2025-10-05,15:00,,Sun,Away,L,1,2,Aston Villa,0.4,1.16,45,2,Burnley
+2025-10-05,15:00,,Sun,Home,W,2,1,Crystal Palace,2.03,1.53,50,7,Everton
+2025-10-05,15:00,,Sun,Away,L,1,2,Everton,1.53,2.03,50,8,Crystal Palace
+2025-10-05,15:00,,Sun,Home,W,2,0,Nottingham,3.28,0.3,52,9,Newcastle United
+2025-10-05,15:00,,Sun,Away,L,0,2,Newcastle United,0.3,3.28,48,4,Nottingham
+2025-10-05,15:00,,Sun,Home,D,1,1,Brighton,0.55,0.92,42,3,Wolves
+2025-10-05,15:00,,Sun,Away,D,1,1,Wolves,0.92,0.55,58,6,Brighton
+2025-10-05,17:30,,Sun,Home,L,0,1,Manchester City,0.7,0.85,30,1,Brentford
+2025-10-05,17:30,,Sun,Away,W,1,0,Brentford,0.85,0.7,70,4,Manchester City
+2025-10-18,13:30,,Sat,Home,L,0,3,Chelsea,2.35,1.68,50,2,Nottingham
+2025-10-18,13:30,,Sat,Away,W,3,0,Nottingham,1.68,2.35,50,6,Chelsea
+2025-10-18,16:00,,Sat,Home,W,2,1,Newcastle United,0.92,1.45,46,5,Brighton
+2025-10-18,16:00,,Sat,Away,L,1,2,Brighton,1.45,0.92,54,3,Newcastle United
+2025-10-18,16:00,,Sat,Home,W,2,0,Leeds,0.46,2.62,31,3,Burnley
+2025-10-18,16:00,,Sat,Away,L,0,2,Burnley,2.62,0.46,69,4,Leeds
+2025-10-18,16:00,,Sat,Home,D,3,3,Bournemouth,4.44,2.03,52,7,Crystal Palace
+2025-10-18,16:00,,Sat,Away,D,3,3,Crystal Palace,2.03,4.44,48,5,Bournemouth
+2025-10-18,16:00,,Sat,Home,W,2,0,Everton,2.39,0.81,71,7,Manchester City
+2025-10-18,16:00,,Sat,Away,L,0,2,Manchester City,0.81,2.39,29,1,Everton
+2025-10-18,16:00,,Sat,Home,W,2,0,Wolves,0.64,0.83,41,2,Sunderland
+2025-10-18,16:00,,Sat,Away,L,0,2,Sunderland,0.83,0.64,59,3,Wolves
+2025-10-18,18:30,,Sat,Home,L,0,1,Arsenal,0.44,1.86,37,0,Fulham
+2025-10-18,18:30,,Sat,Away,W,1,0,Fulham,1.86,0.44,63,5,Arsenal
+2025-10-19,15:00,,Sun,Home,L,1,2,Aston Villa,0.75,0.32,53,3,Tottenham
+2025-10-19,15:00,,Sun,Away,W,2,1,Tottenham,0.32,0.75,47,2,Aston Villa
+2025-10-19,17:30,,Sun,Home,L,1,2,Manchester Utd,2.75,1.34,63,6,Liverpool
+2025-10-19,17:30,,Sun,Away,W,2,1,Liverpool,1.34,2.75,37,4,Manchester Utd
+2025-10-20,21:00,,Mon,Home,L,0,2,Brentford,0.34,2.3,43,1,West Ham
+2025-10-20,21:00,,Mon,Away,W,2,0,West Ham,2.3,0.34,57,7,Brentford
+2025-10-24,21:00,,Fri,Home,W,2,1,West Ham,1.49,0.65,41,5,Leeds
+2025-10-24,21:00,,Fri,Away,L,1,2,Leeds,0.65,1.49,59,3,West Ham
+2025-10-25,16:00,,Sat,Home,L,1,2,Sunderland,0.9,1.31,68,7,Chelsea
+2025-10-25,16:00,,Sat,Away,W,2,1,Chelsea,1.31,0.9,32,4,Sunderland
+2025-10-25,16:00,,Sat,Home,W,2,1,Fulham,2.13,1.53,51,7,Newcastle United
+2025-10-25,16:00,,Sat,Away,L,1,2,Newcastle United,1.53,2.13,49,5,Fulham
+2025-10-25,18:30,,Sat,Home,W,4,2,Brighton,1.29,1.12,44,9,Manchester Utd
+2025-10-25,18:30,,Sat,Away,L,2,4,Manchester Utd,1.12,1.29,56,5,Brighton
+2025-10-25,21:00,,Sat,Home,W,3,2,Liverpool,2.76,2.3,34,8,Brentford
+2025-10-25,21:00,,Sat,Away,L,2,3,Brentford,2.3,2.76,66,5,Liverpool
+2025-10-26,15:00,,Sun,Home,W,1,0,Crystal Palace,0.91,0.45,60,3,Arsenal
+2025-10-26,15:00,,Sun,Away,L,0,1,Arsenal,0.45,0.91,40,1,Crystal Palace
+2025-10-26,15:00,,Sun,Home,W,1,0,Manchester City,0.82,1.18,47,3,Aston Villa
+2025-10-26,15:00,,Sun,Away,L,0,1,Aston Villa,1.18,0.82,53,4,Manchester City
+2025-10-26,15:00,,Sun,Home,W,2,0,Nottingham,0.58,0.35,52,5,Bournemouth
+2025-10-26,15:00,,Sun,Away,L,0,2,Bournemouth,0.35,0.58,48,4,Nottingham
+2025-10-26,15:00,,Sun,Home,L,2,3,Burnley,2.28,1.43,57,7,Wolves
+2025-10-26,15:00,,Sun,Away,W,3,2,Wolves,1.43,2.28,43,7,Burnley
+2025-10-26,17:30,,Sun,Home,L,0,3,Tottenham,1.53,2.09,53,2,Everton
+2025-10-26,17:30,,Sun,Away,W,3,0,Everton,2.09,1.53,47,4,Tottenham
+2025-11-01,16:00,,Sat,Home,W,3,0,Leeds,3.07,0.49,50,7,Brighton
+2025-11-01,16:00,,Sat,Away,L,0,3,Brighton,0.49,3.07,50,2,Leeds
+2025-11-01,16:00,,Sat,Home,L,0,2,Arsenal,0.42,2.42,46,0,Burnley
+2025-11-01,16:00,,Sat,Away,W,2,0,Burnley,2.42,0.42,54,8,Arsenal
+2025-11-01,16:00,,Sat,Home,W,2,0,Brentford,0.7,0.54,36,3,Crystal Palace
+2025-11-01,16:00,,Sat,Away,L,0,2,Crystal Palace,0.54,0.7,64,2,Brentford
+2025-11-01,16:00,,Sat,Home,W,3,0,Wolves,1.39,0.24,63,6,Fulham
+2025-11-01,16:00,,Sat,Away,L,0,3,Fulham,0.24,1.39,37,2,Wolves
+2025-11-01,16:00,,Sat,Home,D,2,2,Manchester Utd,2.0,1.15,41,3,Nottingham
+2025-11-01,16:00,,Sat,Away,D,2,2,Nottingham,1.15,2.0,59,7,Manchester Utd
+2025-11-01,18:30,,Sat,Home,L,0,1,Chelsea,0.11,3.69,48,1,Tottenham
+2025-11-01,18:30,,Sat,Away,W,1,0,Tottenham,3.69,0.11,52,9,Chelsea
+2025-11-01,21:00,,Sat,Home,W,2,0,Aston Villa,1.19,0.41,53,4,Liverpool
+2025-11-01,21:00,,Sat,Away,L,0,2,Liverpool,0.41,1.19,47,3,Aston Villa
+2025-11-02,15:00,,Sun,Home,W,3,1,Newcastle United,1.75,0.52,37,9,West Ham
+2025-11-02,15:00,,Sun,Away,L,1,3,West Ham,0.52,1.75,63,4,Newcastle United
+2025-11-02,17:30,,Sun,Home,W,3,1,Bournemouth,2.22,0.72,48,8,Manchester City
+2025-11-02,17:30,,Sun,Away,L,1,3,Manchester City,0.72,2.22,52,5,Bournemouth
+2025-11-03,21:00,,Mon,Home,D,1,1,Everton,1.09,0.86,61,3,Sunderland
+2025-11-03,21:00,,Mon,Away,D,1,1,Sunderland,0.86,1.09,39,2,Everton
+2025-11-08,13:30,,Sat,Home,D,2,2,Manchester Utd,0.93,0.62,55,4,Tottenham
+2025-11-08,13:30,,Sat,Away,D,2,2,Tottenham,0.62,0.93,45,2,Manchester Utd
+2025-11-08,16:00,,Sat,Home,W,2,0,Fulham,1.44,0.4,50,5,Everton
+2025-11-08,16:00,,Sat,Away,L,0,2,Everton,0.4,1.44,50,4,Fulham
+2025-11-08,16:00,,Sat,Home,W,3,2,Burnley,3.02,1.06,43,6,West Ham
+2025-11-08,16:00,,Sat,Away,L,2,3,West Ham,1.06,3.02,57,7,Burnley
+2025-11-08,18:30,,Sat,Home,D,2,2,Arsenal,0.43,1.92,35,2,Sunderland
+2025-11-08,18:30,,Sat,Away,D,2,2,Sunderland,1.92,0.43,65,7,Arsenal
+2025-11-08,21:00,,Sat,Home,W,3,0,Wolves,3.31,0.17,64,8,Chelsea
+2025-11-08,21:00,,Sat,Away,L,0,3,Chelsea,0.17,3.31,36,0,Wolves
+2025-11-09,15:00,,Sun,Home,W,4,0,Bournemouth,1.69,1.61,52,8,Aston Villa
+2025-11-09,15:00,,Sun,Away,L,0,4,Aston Villa,1.61,1.69,48,3,Bournemouth
+2025-11-09,15:00,,Sun,Home,W,3,1,Newcastle United,2.35,0.44,49,7,Brentford
+2025-11-09,15:00,,Sun,Away,L,1,3,Brentford,0.44,2.35,51,1,Newcastle United
+2025-11-09,15:00,,Sun,Home,D,0,0,Brighton,0.75,0.39,42,2,Crystal Palace
+2025-11-09,15:00,,Sun,Away,D,0,0,Crystal Palace,0.39,0.75,58,3,Brighton
+2025-11-09,15:00,,Sun,Home,W,3,1,Leeds,2.55,0.69,45,6,Nottingham
+2025-11-09,15:00,,Sun,Away,L,1,3,Nottingham,0.69,2.55,55,3,Leeds
+2025-11-09,17:30,,Sun,Home,W,3,0,Liverpool,1.51,0.61,49,6,Manchester City
+2025-11-09,17:30,,Sun,Away,L,0,3,Manchester City,0.61,1.51,51,1,Liverpool
+2025-11-22,13:30,,Sat,Home,L,0,2,Chelsea,0.44,1.71,44,2,Burnley
+2025-11-22,13:30,,Sat,Away,W,2,0,Burnley,1.71,0.44,56,5,Chelsea
+2025-11-22,16:00,,Sat,Home,D,2,2,West Ham,4.05,0.65,76,10,Bournemouth
+2025-11-22,16:00,,Sat,Away,D,2,2,Bournemouth,0.65,4.05,24,2,West Ham
+2025-11-22,16:00,,Sat,Home,W,2,1,Brentford,1.22,1.9,64,5,Brighton
+2025-11-22,16:00,,Sat,Away,L,1,2,Brighton,1.9,1.22,36,4,Brentford
+2025-11-22,16:00,,Sat,Home,W,1,0,Sunderland,2.16,0.17,57,6,Fulham
+2025-11-22,16:00,,Sat,Away,L,0,1,Fulham,0.17,2.16,43,2,Sunderland
+2025-11-22,16:00,,Sat,Home,L,0,3,Nottingham,1.93,1.58,74,4,Liverpool
+2025-11-22,16:00,,Sat,Away,W,3,0,Liverpool,1.58,1.93,26,7,Nottingham
+2025-11-22,16:00,,Sat,Home,L,0,2,Crystal Palace,1.79,1.27,48,1,Wolves
+2025-11-22,16:00,,Sat,Away,W,2,0,Wolves,1.27,1.79,52,4,Crystal Palace
+2025-11-22,18:30,,Sat,Home,W,2,1,Manchester City,2.24,2.49,33,5,Newcastle United
+2025-11-22,18:30,,Sat,Away,L,1,2,Newcastle United,2.49,2.24,67,4,Manchester City
+2025-11-23,15:00,,Sun,Home,L,1,2,Aston Villa,1.79,1.58,48,5,Leeds
+2025-11-23,15:00,,Sun,Away,W,2,1,Leeds,1.58,1.79,52,3,Aston Villa
+2025-11-23,17:30,,Sun,Home,W,4,1,Tottenham,1.92,0.07,57,8,Arsenal
+2025-11-23,17:30,,Sun,Away,L,1,4,Arsenal,0.07,1.92,43,2,Tottenham
+2025-11-24,21:00,,Mon,Home,L,0,1,Everton,1.71,0.21,70,6,Manchester Utd
+2025-11-24,21:00,,Mon,Away,W,1,0,Manchester Utd,0.21,1.71,30,1,Everton
+2025-11-29,16:00,,Sat,Home,W,3,1,Burnley,3.06,0.95,52,4,Brentford
+2025-11-29,16:00,,Sat,Away,L,1,3,Brentford,0.95,3.06,48,2,Burnley
+2025-11-29,16:00,,Sat,Home,W,3,2,Leeds,3.1,1.54,62,9,Manchester City
+2025-11-29,16:00,,Sat,Away,L,2,3,Manchester City,1.54,3.1,38,4,Leeds
+2025-11-29,16:00,,Sat,Home,W,3,2,Bournemouth,1.28,1.7,42,6,Sunderland
+2025-11-29,16:00,,Sat,Away,L,2,3,Sunderland,1.7,1.28,58,6,Bournemouth
+2025-11-29,18:30,,Sat,Home,L,1,4,Newcastle United,0.99,1.91,49,2,Everton
+2025-11-29,18:30,,Sat,Away,W,4,1,Everton,1.91,0.99,51,8,Newcastle United
+2025-11-29,21:00,,Sat,Home,L,1,2,Fulham,0.86,0.45,63,2,Tottenham
+2025-11-29,21:00,,Sat,Away,W,2,1,Tottenham,0.45,0.86,37,3,Fulham
+2025-11-30,13:00,,Sun,Home,L,1,2,Manchester Utd,1.83,1.19,44,3,Crystal Palace
+2025-11-30,13:00,,Sun,Away,W,2,1,Crystal Palace,1.19,1.83,56,6,Manchester Utd
+2025-11-30,15:05,,Sun,Home,W,1,0,Wolves,0.94,0.49,52,6,Aston Villa
+2025-11-30,15:05,,Sun,Away,L,0,1,Aston Villa,0.49,0.94,48,4,Wolves
+2025-11-30,15:05,,Sun,Home,L,0,2,Brighton,0.89,2.0,52,3,Nottingham
+2025-11-30,15:05,,Sun,Away,W,2,0,Nottingham,2.0,0.89,48,6,Brighton
+2025-11-30,15:05,,Sun,Home,L,0,2,Liverpool,0.3,1.25,44,0,West Ham
+2025-11-30,15:05,,Sun,Away,W,2,0,West Ham,1.25,0.3,56,5,Liverpool
+2025-11-30,17:30,,Sun,Home,D,1,1,Arsenal,0.8,1.26,38,4,Chelsea
+2025-11-30,17:30,,Sun,Away,D,1,1,Chelsea,1.26,0.8,62,4,Arsenal
+2025-12-02,20:30,,Tue,Home,L,0,1,Everton,0.5,1.44,55,2,Bournemouth
+2025-12-02,20:30,,Tue,Away,W,1,0,Bournemouth,1.44,0.5,45,3,Everton
+2025-12-02,20:30,,Tue,Home,L,4,5,Manchester City,0.91,2.17,57,6,Fulham
+2025-12-02,20:30,,Tue,Away,W,5,4,Fulham,2.17,0.91,43,4,Manchester City
+2025-12-02,21:15,,Tue,Home,D,2,2,Tottenham,2.04,0.75,53,7,Newcastle United
+2025-12-02,21:15,,Tue,Away,D,2,2,Newcastle United,0.75,2.04,47,2,Tottenham
+2025-12-03,20:30,,Wed,Home,W,2,0,Brentford,1.72,0.34,62,7,Arsenal
+2025-12-03,20:30,,Wed,Away,L,0,2,Arsenal,0.34,1.72,38,1,Brentford
+2025-12-03,20:30,,Wed,Home,L,3,4,Aston Villa,1.7,2.76,56,7,Brighton
+2025-12-03,20:30,,Wed,Away,W,4,3,Brighton,2.76,1.7,44,10,Aston Villa
+2025-12-03,20:30,,Wed,Home,L,0,1,Crystal Palace,0.88,0.59,58,4,Burnley
+2025-12-03,20:30,,Wed,Away,W,1,0,Burnley,0.59,0.88,42,3,Crystal Palace
+2025-12-03,20:30,,Wed,Home,L,0,1,Nottingham,0.92,0.74,50,1,Wolves
+2025-12-03,20:30,,Wed,Away,W,1,0,Wolves,0.74,0.92,50,3,Nottingham
+2025-12-03,21:15,,Wed,Home,W,3,1,Chelsea,2.82,1.11,29,5,Leeds
+2025-12-03,21:15,,Wed,Away,L,1,3,Leeds,1.11,2.82,71,2,Chelsea
+2025-12-03,21:15,,Wed,Home,D,1,1,Sunderland,1.46,0.42,68,4,Liverpool
+2025-12-03,21:15,,Wed,Away,D,1,1,Liverpool,0.42,1.46,32,6,Sunderland
+2025-12-04,21:00,,Thu,Home,D,1,1,West Ham,1.79,0.79,65,4,Manchester Utd
+2025-12-04,21:00,,Thu,Away,D,1,1,Manchester Utd,0.79,1.79,35,3,West Ham
+2025-12-06,13:30,,Sat,Home,W,2,1,Arsenal,2.17,1.93,47,6,Aston Villa
+2025-12-06,13:30,,Sat,Away,L,1,2,Aston Villa,1.93,2.17,53,9,Arsenal
+2025-12-06,16:00,,Sat,Home,D,0,0,Chelsea,1.42,0.92,39,5,Bournemouth
+2025-12-06,16:00,,Sat,Away,D,0,0,Bournemouth,0.92,1.42,61,4,Chelsea
+2025-12-06,16:00,,Sat,Home,W,3,0,Nottingham,1.11,0.54,41,5,Everton
+2025-12-06,16:00,,Sat,Away,L,0,3,Everton,0.54,1.11,59,3,Nottingham
+2025-12-06,16:00,,Sat,Home,W,3,0,Sunderland,2.42,0.71,64,6,Manchester City
+2025-12-06,16:00,,Sat,Away,L,0,3,Manchester City,0.71,2.42,36,1,Sunderland
+2025-12-06,16:00,,Sat,Home,W,2,1,Burnley,1.77,1.6,69,7,Newcastle United
+2025-12-06,16:00,,Sat,Away,L,1,2,Newcastle United,1.6,1.77,31,3,Burnley
+2025-12-06,16:00,,Sat,Home,W,2,0,Brentford,2.18,0.29,53,7,Tottenham
+2025-12-06,16:00,,Sat,Away,L,0,2,Tottenham,0.29,2.18,47,1,Brentford
+2025-12-06,18:30,,Sat,Home,D,3,3,Liverpool,1.5,1.91,45,5,Leeds
+2025-12-06,18:30,,Sat,Away,D,3,3,Leeds,1.91,1.5,55,7,Liverpool
+2025-12-07,15:00,,Sun,Home,D,1,1,West Ham,1.87,1.15,68,4,Brighton
+2025-12-07,15:00,,Sun,Away,D,1,1,Brighton,1.15,1.87,32,5,West Ham
+2025-12-07,17:30,,Sun,Home,L,1,2,Crystal Palace,0.76,1.66,63,4,Fulham
+2025-12-07,17:30,,Sun,Away,W,2,1,Fulham,1.66,0.76,37,5,Crystal Palace
+2025-12-08,21:00,,Mon,Home,L,1,4,Manchester Utd,0.41,4.24,37,2,Wolves
+2025-12-08,21:00,,Mon,Away,W,4,1,Wolves,4.24,0.41,63,10,Manchester Utd
+2025-12-13,16:00,,Sat,Home,W,2,0,Everton,2.2,1.03,58,5,Chelsea
+2025-12-13,16:00,,Sat,Away,L,0,2,Chelsea,1.03,2.2,42,2,Everton
+2025-12-13,16:00,,Sat,Home,W,2,0,Brighton,1.89,1.9,49,4,Liverpool
+2025-12-13,16:00,,Sat,Away,L,0,2,Liverpool,1.9,1.89,51,1,Brighton
+2025-12-13,18:30,,Sat,Home,L,2,3,Fulham,2.45,2.23,53,8,Burnley
+2025-12-13,18:30,,Sat,Away,W,3,2,Burnley,2.23,2.45,47,4,Fulham
+2025-12-13,21:00,,Sat,Home,W,2,1,Wolves,1.13,0.37,69,2,Arsenal
+2025-12-13,21:00,,Sat,Away,L,1,2,Arsenal,0.37,1.13,31,2,Wolves
+2025-12-14,15:00,,Sun,Home,L,0,3,Manchester City,1.88,1.19,39,4,Crystal Palace
+2025-12-14,15:00,,Sun,Away,W,3,0,Crystal Palace,1.19,1.88,61,6,Manchester City
+2025-12-14,15:00,,Sun,Home,W,3,0,Tottenham,2.31,0.33,48,6,Nottingham
+2025-12-14,15:00,,Sun,Away,L,0,3,Nottingham,0.33,2.31,52,1,Tottenham
+2025-12-14,15:00,,Sun,Home,W,1,0,Newcastle United,0.3,0.24,47,1,Sunderland
+2025-12-14,15:00,,Sun,Away,L,0,1,Sunderland,0.24,0.3,53,2,Newcastle United
+2025-12-14,15:00,,Sun,Home,L,2,3,Aston Villa,1.02,0.67,41,3,West Ham
+2025-12-14,15:00,,Sun,Away,W,3,2,West Ham,0.67,1.02,59,4,Aston Villa
+2025-12-14,17:30,,Sun,Home,D,1,1,Leeds,0.72,1.51,57,2,Brentford
+2025-12-14,17:30,,Sun,Away,D,1,1,Brentford,1.51,0.72,43,4,Leeds
+2025-12-15,21:00,,Mon,Home,D,4,4,Bournemouth,3.4,1.94,57,9,Manchester Utd
+2025-12-15,21:00,,Mon,Away,D,4,4,Manchester Utd,1.94,3.4,43,9,Bournemouth
+2025-12-20,13:30,,Sat,Home,D,2,2,Chelsea,2.3,1.22,47,5,Newcastle United
+2025-12-20,13:30,,Sat,Away,D,2,2,Newcastle United,1.22,2.3,53,4,Chelsea
+2025-12-20,16:00,,Sat,Home,D,1,1,Burnley,1.41,0.38,66,1,Bournemouth
+2025-12-20,16:00,,Sat,Away,D,1,1,Bournemouth,0.38,1.41,34,1,Burnley
+2025-12-20,16:00,,Sat,Home,D,0,0,Sunderland,1.12,1.39,57,4,Brighton
+2025-12-20,16:00,,Sat,Away,D,0,0,Brighton,1.39,1.12,43,6,Sunderland
+2025-12-20,16:00,,Sat,Home,W,3,0,West Ham,2.1,0.98,66,8,Manchester City
+2025-12-20,16:00,,Sat,Away,L,0,3,Manchester City,0.98,2.1,34,3,West Ham
+2025-12-20,16:00,,Sat,Home,L,0,2,Brentford,1.27,1.28,43,2,Wolves
+2025-12-20,16:00,,Sat,Away,W,2,0,Wolves,1.28,1.27,57,6,Brentford
+2025-12-20,18:30,,Sat,Home,L,1,2,Liverpool,1.06,0.66,35,4,Tottenham
+2025-12-20,18:30,,Sat,Away,W,2,1,Tottenham,0.66,1.06,65,4,Liverpool
+2025-12-20,21:00,,Sat,Home,L,0,1,Arsenal,0.2,2.01,35,1,Everton
+2025-12-20,21:00,,Sat,Away,W,1,0,Everton,2.01,0.2,65,2,Arsenal
+2025-12-20,21:00,,Sat,Home,W,4,1,Crystal Palace,2.68,1.57,53,8,Leeds
+2025-12-20,21:00,,Sat,Away,L,1,4,Leeds,1.57,2.68,47,3,Crystal Palace
+2025-12-21,17:30,,Sun,Home,W,2,1,Manchester Utd,1.55,1.34,43,4,Aston Villa
+2025-12-21,17:30,,Sun,Away,L,1,2,Aston Villa,1.34,1.55,57,6,Manchester Utd
+2025-12-22,21:00,,Mon,Home,W,1,0,Nottingham,1.5,0.67,50,1,Fulham
+2025-12-22,21:00,,Mon,Away,L,0,1,Fulham,0.67,1.5,50,2,Nottingham
+2025-12-26,21:00,,Fri,Home,W,1,0,Newcastle United,1.21,1.18,33,3,Manchester Utd
+2025-12-26,21:00,,Fri,Away,L,0,1,Manchester Utd,1.18,1.21,67,3,Newcastle United
+2025-12-27,13:30,,Sat,Home,L,1,2,Manchester City,0.55,1.45,34,2,Nottingham
+2025-12-27,13:30,,Sat,Away,W,2,1,Nottingham,1.45,0.55,66,5,Manchester City
+2025-12-27,16:00,,Sat,Home,W,2,1,Brighton,3.08,0.85,53,6,Arsenal
+2025-12-27,16:00,,Sat,Away,L,1,2,Arsenal,0.85,3.08,47,3,Brighton
+2025-12-27,16:00,,Sat,Home,W,4,1,Bournemouth,3.66,2.72,49,7,Brentford
+2025-12-27,16:00,,Sat,Away,L,1,4,Brentford,2.72,3.66,51,10,Bournemouth
+2025-12-27,16:00,,Sat,Home,D,0,0,Everton,1.41,0.82,54,0,Burnley
+2025-12-27,16:00,,Sat,Away,D,0,0,Burnley,0.82,1.41,46,6,Everton
+2025-12-27,16:00,,Sat,Home,W,2,1,Wolves,1.55,1.07,67,4,Liverpool
+2025-12-27,16:00,,Sat,Away,L,1,2,Liverpool,1.07,1.55,33,4,Wolves
+2025-12-27,16:00,,Sat,Home,L,0,1,Fulham,0.91,1.63,44,2,West Ham
+2025-12-27,16:00,,Sat,Away,W,1,0,West Ham,1.63,0.91,56,5,Fulham
+2025-12-27,18:30,,Sat,Home,L,1,2,Aston Villa,2.15,1.19,63,3,Chelsea
+2025-12-27,18:30,,Sat,Away,W,2,1,Chelsea,1.19,2.15,37,8,Aston Villa
+2025-12-28,15:00,,Sun,Home,D,1,1,Leeds,0.7,2.16,43,3,Sunderland
+2025-12-28,15:00,,Sun,Away,D,1,1,Sunderland,2.16,0.7,57,6,Leeds
+2025-12-28,17:30,,Sun,Home,L,0,1,Tottenham,1.47,0.89,62,2,Crystal Palace
+2025-12-28,17:30,,Sun,Away,W,1,0,Crystal Palace,0.89,1.47,38,4,Tottenham
+2025-12-30,20:30,,Tue,Home,L,1,3,Newcastle United,1.09,2.32,48,4,Burnley
+2025-12-30,20:30,,Tue,Away,W,3,1,Burnley,2.32,1.09,52,9,Newcastle United
+2025-12-30,20:30,,Tue,Home,D,2,2,Bournemouth,2.31,3.14,67,3,Chelsea
+2025-12-30,20:30,,Tue,Away,D,2,2,Chelsea,3.14,2.31,33,6,Bournemouth
+2025-12-30,20:30,,Tue,Home,L,0,2,Everton,1.55,1.26,70,6,Nottingham
+2025-12-30,20:30,,Tue,Away,W,2,0,Nottingham,1.26,1.55,30,3,Everton
+2025-12-30,20:30,,Tue,Home,D,2,2,Brighton,2.06,2.94,38,4,West Ham
+2025-12-30,20:30,,Tue,Away,D,2,2,West Ham,2.94,2.06,62,6,Brighton
+2025-12-30,21:15,,Tue,Home,W,4,1,Aston Villa,3.05,2.66,46,7,Arsenal
+2025-12-30,21:15,,Tue,Away,L,1,4,Arsenal,2.66,3.05,54,3,Aston Villa
+2025-12-30,21:15,,Tue,Home,D,1,1,Wolves,0.84,1.16,56,6,Manchester Utd
+2025-12-30,21:15,,Tue,Away,D,1,1,Manchester Utd,1.16,0.84,44,4,Wolves
+2026-01-01,18:30,,Thu,Home,D,1,1,Fulham,1.93,1.76,40,2,Crystal Palace
+2026-01-01,18:30,,Thu,Away,D,1,1,Crystal Palace,1.76,1.93,60,5,Fulham
+2026-01-01,18:30,,Thu,Home,D,0,0,Leeds,2.07,0.69,68,4,Liverpool
+2026-01-01,18:30,,Thu,Away,D,0,0,Liverpool,0.69,2.07,32,2,Leeds
+2026-01-01,21:00,,Thu,Home,D,0,0,Tottenham,0.92,0.86,56,2,Brentford
+2026-01-01,21:00,,Thu,Away,D,0,0,Brentford,0.86,0.92,44,3,Tottenham
+2026-01-01,21:00,,Thu,Home,D,0,0,Manchester City,0.88,2.24,32,4,Sunderland
+2026-01-01,21:00,,Thu,Away,D,0,0,Sunderland,2.24,0.88,68,4,Manchester City
+2026-01-03,13:30,,Sat,Home,W,3,1,Nottingham,1.59,0.89,73,4,Aston Villa
+2026-01-03,13:30,,Sat,Away,L,1,3,Aston Villa,0.89,1.59,27,5,Nottingham
+2026-01-03,16:00,,Sat,Home,W,2,0,Burnley,1.45,0.3,60,4,Brighton
+2026-01-03,16:00,,Sat,Away,L,0,2,Brighton,0.3,1.45,40,3,Burnley
+2026-01-03,16:00,,Sat,Home,W,3,0,West Ham,1.87,0.25,33,8,Wolves
+2026-01-03,16:00,,Sat,Away,L,0,3,Wolves,0.25,1.87,67,0,West Ham
+2026-01-03,18:30,,Sat,Home,L,2,3,Arsenal,1.44,1.13,43,3,Bournemouth
+2026-01-03,18:30,,Sat,Away,W,3,2,Bournemouth,1.13,1.44,57,5,Arsenal
+2026-01-04,13:30,,Sun,Home,D,1,1,Manchester Utd,0.9,1.59,45,3,Leeds
+2026-01-04,13:30,,Sun,Away,D,1,1,Leeds,1.59,0.9,55,2,Manchester Utd
+2026-01-04,16:00,,Sun,Home,L,2,4,Brentford,0.88,2.65,45,6,Everton
+2026-01-04,16:00,,Sun,Away,W,4,2,Everton,2.65,0.88,55,7,Brentford
+2026-01-04,16:00,,Sun,Home,W,2,0,Crystal Palace,2.08,0.7,59,7,Newcastle United
+2026-01-04,16:00,,Sun,Away,L,0,2,Newcastle United,0.7,2.08,41,1,Crystal Palace
+2026-01-04,16:00,,Sun,Home,D,1,1,Sunderland,1.19,0.44,49,5,Tottenham
+2026-01-04,16:00,,Sun,Away,D,1,1,Tottenham,0.44,1.19,51,3,Sunderland
+2026-01-04,16:15,,Sun,Home,D,2,2,Liverpool,0.74,1.37,42,2,Fulham
+2026-01-04,16:15,,Sun,Away,D,2,2,Fulham,1.37,0.74,58,2,Liverpool
+2026-01-04,18:30,,Sun,Home,D,1,1,Chelsea,1.02,1.85,57,3,Manchester City
+2026-01-04,18:30,,Sun,Away,D,1,1,Manchester City,1.85,1.02,43,3,Chelsea
+2026-01-06,21:00,,Tue,Home,L,1,2,Nottingham,0.95,1.38,47,3,West Ham
+2026-01-06,21:00,,Tue,Away,W,2,1,West Ham,1.38,0.95,53,5,Nottingham
+2026-01-07,20:30,,Wed,Home,W,3,2,Tottenham,1.26,1.24,42,3,Bournemouth
+2026-01-07,20:30,,Wed,Away,L,2,3,Bournemouth,1.24,1.26,58,4,Tottenham
+2026-01-07,20:30,,Wed,Home,W,3,0,Sunderland,3.25,1.72,51,6,Brentford
+2026-01-07,20:30,,Wed,Away,L,0,3,Brentford,1.72,3.25,49,3,Sunderland
+2026-01-07,20:30,,Wed,Home,D,0,0,Aston Villa,1.5,1.74,41,5,Crystal Palace
+2026-01-07,20:30,,Wed,Away,D,0,0,Crystal Palace,1.74,1.5,59,3,Aston Villa
+2026-01-07,20:30,,Wed,Home,D,1,1,Wolves,0.88,0.68,45,2,Everton
+2026-01-07,20:30,,Wed,Away,D,1,1,Everton,0.68,0.88,55,4,Wolves
+2026-01-07,20:30,,Wed,Home,W,2,1,Chelsea,1.2,2.39,55,5,Fulham
+2026-01-07,20:30,,Wed,Away,L,1,2,Fulham,2.39,1.2,45,6,Chelsea
+2026-01-07,20:30,,Wed,Home,D,1,1,Brighton,2.35,0.81,60,6,Manchester City
+2026-01-07,20:30,,Wed,Away,D,1,1,Manchester City,0.81,2.35,40,3,Brighton
+2026-01-07,21:15,,Wed,Home,D,2,2,Manchester Utd,0.24,2.54,35,1,Burnley
+2026-01-07,21:15,,Wed,Away,D,2,2,Burnley,2.54,0.24,65,10,Manchester Utd
+2026-01-07,21:15,,Wed,Home,W,4,3,Leeds,2.43,1.89,62,8,Newcastle United
+2026-01-07,21:15,,Wed,Away,L,3,4,Newcastle United,1.89,2.43,38,6,Leeds
+2026-01-08,21:00,,Thu,Home,D,0,0,Liverpool,0.57,0.31,48,4,Arsenal
+2026-01-08,21:00,,Thu,Away,D,0,0,Arsenal,0.31,0.57,52,0,Liverpool
+2026-01-17,13:30,,Sat,Home,W,2,0,Manchester City,2.27,0.45,32,7,Manchester Utd
+2026-01-17,13:30,,Sat,Away,L,0,2,Manchester Utd,0.45,2.27,68,1,Manchester City
+2026-01-17,16:00,,Sat,Home,W,2,0,Brentford,1.59,1.52,46,2,Chelsea
+2026-01-17,16:00,,Sat,Away,L,0,2,Chelsea,1.52,1.59,54,5,Brentford
+2026-01-17,16:00,,Sat,Home,W,1,0,Fulham,1.43,0.38,46,5,Leeds
+2026-01-17,16:00,,Sat,Away,L,0,1,Leeds,0.38,1.43,54,1,Fulham
+2026-01-17,16:00,,Sat,Home,D,1,1,Burnley,3.19,0.4,73,11,Liverpool
+2026-01-17,16:00,,Sat,Away,D,1,1,Liverpool,0.4,3.19,27,1,Burnley
+2026-01-17,16:00,,Sat,Home,W,2,1,Crystal Palace,1.71,0.61,57,7,Sunderland
+2026-01-17,16:00,,Sat,Away,L,1,2,Sunderland,0.61,1.71,43,2,Crystal Palace
+2026-01-17,16:00,,Sat,Home,L,1,2,West Ham,1.68,2.69,62,6,Tottenham
+2026-01-17,16:00,,Sat,Away,W,2,1,Tottenham,2.69,1.68,38,4,West Ham
+2026-01-17,18:30,,Sat,Home,D,0,0,Arsenal,0.34,2.1,40,0,Nottingham
+2026-01-17,18:30,,Sat,Away,D,0,0,Nottingham,2.1,0.34,60,3,Arsenal
+2026-01-18,15:00,,Sun,Home,D,0,0,Newcastle United,0.28,0.94,33,2,Wolves
+2026-01-18,15:00,,Sun,Away,D,0,0,Wolves,0.94,0.28,67,2,Newcastle United
+2026-01-18,17:30,,Sun,Home,L,0,1,Everton,1.36,0.56,63,5,Aston Villa
+2026-01-18,17:30,,Sun,Away,W,1,0,Aston Villa,0.56,1.36,37,3,Everton
+2026-01-19,21:00,,Mon,Home,D,1,1,Bournemouth,1.02,1.28,67,5,Brighton
+2026-01-19,21:00,,Mon,Away,D,1,1,Brighton,1.28,1.02,33,2,Bournemouth
+2026-01-24,13:30,,Sat,Home,W,3,1,Sunderland,1.52,0.67,47,5,West Ham
+2026-01-24,13:30,,Sat,Away,L,1,3,West Ham,0.67,1.52,53,2,Sunderland
+2026-01-24,16:00,,Sat,Home,D,2,2,Tottenham,1.44,2.05,37,4,Burnley
+2026-01-24,16:00,,Sat,Away,D,2,2,Burnley,2.05,1.44,63,11,Tottenham
+2026-01-24,16:00,,Sat,Home,W,2,1,Brighton,1.05,1.59,49,4,Fulham
+2026-01-24,16:00,,Sat,Away,L,1,2,Fulham,1.59,1.05,51,5,Brighton
+2026-01-24,16:00,,Sat,Home,W,2,0,Wolves,0.86,0.61,64,4,Manchester City
+2026-01-24,16:00,,Sat,Away,L,0,2,Manchester City,0.61,0.86,36,1,Wolves
+2026-01-24,18:30,,Sat,Home,W,3,2,Liverpool,2.34,0.93,33,5,Bournemouth
+2026-01-24,18:30,,Sat,Away,L,2,3,Bournemouth,0.93,2.34,67,4,Liverpool
+2026-01-25,15:00,,Sun,Home,L,0,2,Nottingham,1.81,0.78,66,1,Brentford
+2026-01-25,15:00,,Sun,Away,W,2,0,Brentford,0.78,1.81,34,2,Nottingham
+2026-01-25,15:00,,Sun,Home,L,1,3,Chelsea,1.77,2.2,43,7,Crystal Palace
+2026-01-25,15:00,,Sun,Away,W,3,1,Crystal Palace,2.2,1.77,57,6,Chelsea
+2026-01-25,15:00,,Sun,Home,L,0,2,Aston Villa,2.18,1.15,61,4,Newcastle United
+2026-01-25,15:00,,Sun,Away,W,2,0,Newcastle United,1.15,2.18,39,8,Aston Villa
+2026-01-25,17:30,,Sun,Home,L,2,3,Manchester Utd,1.19,0.71,56,4,Arsenal
+2026-01-25,17:30,,Sun,Away,W,3,2,Arsenal,0.71,1.19,44,3,Manchester Utd
+2026-01-26,21:00,,Mon,Home,D,1,1,Leeds,0.69,1.37,58,3,Everton
+2026-01-26,21:00,,Mon,Away,D,1,1,Everton,1.37,0.69,42,4,Leeds
+2026-01-31,16:00,,Sat,Home,D,1,1,Everton,1.44,1.2,54,2,Brighton
+2026-01-31,16:00,,Sat,Away,D,1,1,Brighton,1.2,1.44,46,4,Everton
+2026-01-31,16:00,,Sat,Home,L,0,4,Arsenal,0.15,2.19,49,1,Leeds
+2026-01-31,16:00,,Sat,Away,W,4,0,Leeds,2.19,0.15,51,8,Arsenal
+2026-01-31,16:00,,Sat,Home,L,0,2,Bournemouth,1.38,1.36,51,7,Wolves
+2026-01-31,16:00,,Sat,Away,W,2,0,Wolves,1.36,1.38,49,4,Bournemouth
+2026-01-31,18:30,,Sat,Home,W,3,2,West Ham,2.7,1.12,71,6,Chelsea
+2026-01-31,18:30,,Sat,Away,L,2,3,Chelsea,1.12,2.7,29,6,West Ham
+2026-01-31,21:00,,Sat,Home,W,4,1,Newcastle United,2.28,0.36,54,7,Liverpool
+2026-01-31,21:00,,Sat,Away,L,1,4,Liverpool,0.36,2.28,46,2,Newcastle United
+2026-02-01,15:00,,Sun,Home,L,0,1,Brentford,2.41,0.37,72,5,Aston Villa
+2026-02-01,15:00,,Sun,Away,W,1,0,Aston Villa,0.37,2.41,28,2,Brentford
+2026-02-01,15:00,,Sun,Home,W,3,2,Fulham,1.74,1.97,42,6,Manchester Utd
+2026-02-01,15:00,,Sun,Away,L,2,3,Manchester Utd,1.97,1.74,58,6,Fulham
+2026-02-01,15:00,,Sun,Home,D,1,1,Crystal Palace,0.49,1.9,33,1,Nottingham
+2026-02-01,15:00,,Sun,Away,D,1,1,Nottingham,1.9,0.49,67,3,Crystal Palace
+2026-02-01,17:30,,Sun,Home,D,2,2,Manchester City,1.05,2.08,40,6,Tottenham
+2026-02-01,17:30,,Sun,Away,D,2,2,Tottenham,2.08,1.05,60,3,Manchester City
+2026-02-02,21:00,,Mon,Home,W,3,0,Burnley,1.2,0.06,44,5,Sunderland
+2026-02-02,21:00,,Mon,Away,L,0,3,Sunderland,0.06,1.2,56,0,Burnley
+2026-02-06,21:00,,Fri,Home,W,3,1,Nottingham,2.5,1.33,56,5,Leeds
+2026-02-06,21:00,,Fri,Away,L,1,3,Leeds,1.33,2.5,44,6,Nottingham
+2026-02-07,13:30,,Sat,Home,W,2,0,Tottenham,1.78,0.49,65,10,Manchester Utd
+2026-02-07,13:30,,Sat,Away,L,0,2,Manchester Utd,0.49,1.78,35,1,Tottenham
+2026-02-07,16:00,,Sat,Home,W,3,0,Sunderland,1.5,0.19,49,5,Arsenal
+2026-02-07,16:00,,Sat,Away,L,0,3,Arsenal,0.19,1.5,51,3,Sunderland
+2026-02-07,16:00,,Sat,Home,D,1,1,Aston Villa,2.06,0.44,53,9,Bournemouth
+2026-02-07,16:00,,Sat,Away,D,1,1,Bournemouth,0.44,2.06,47,4,Aston Villa
+2026-02-07,16:00,,Sat,Home,L,0,2,West Ham,1.33,1.02,54,5,Burnley
+2026-02-07,16:00,,Sat,Away,W,2,0,Burnley,1.02,1.33,46,4,West Ham
+2026-02-07,16:00,,Sat,Home,L,1,2,Everton,1.97,1.88,55,3,Fulham
+2026-02-07,16:00,,Sat,Away,W,2,1,Fulham,1.88,1.97,45,3,Everton
+2026-02-07,16:00,,Sat,Home,L,1,3,Chelsea,1.06,3.44,34,3,Wolves
+2026-02-07,16:00,,Sat,Away,W,3,1,Wolves,3.44,1.06,66,6,Chelsea
+2026-02-07,18:30,,Sat,Home,L,2,3,Brentford,2.24,1.79,54,4,Newcastle United
+2026-02-07,18:30,,Sat,Away,W,3,2,Newcastle United,1.79,2.24,46,5,Brentford
+2026-02-08,15:00,,Sun,Home,L,0,1,Crystal Palace,0.74,1.16,64,2,Brighton
+2026-02-08,15:00,,Sun,Away,W,1,0,Brighton,1.16,0.74,36,4,Crystal Palace
+2026-02-08,17:30,,Sun,Home,L,1,2,Manchester City,1.21,2.75,47,4,Liverpool
+2026-02-08,17:30,,Sun,Away,W,2,1,Liverpool,2.75,1.21,53,7,Manchester City
+2026-02-10,20:30,,Tue,Home,D,2,2,Leeds,3.13,1.44,66,4,Chelsea
+2026-02-10,20:30,,Tue,Away,D,2,2,Chelsea,1.44,3.13,34,2,Leeds
+2026-02-10,20:30,,Tue,Home,L,1,2,Bournemouth,2.95,1.33,53,6,Everton
+2026-02-10,20:30,,Tue,Away,W,2,1,Everton,1.33,2.95,47,4,Bournemouth
+2026-02-10,20:30,,Tue,Home,L,1,2,Newcastle United,1.85,2.48,53,2,Tottenham
+2026-02-10,20:30,,Tue,Away,W,2,1,Tottenham,2.48,1.85,47,5,Newcastle United
+2026-02-10,21:15,,Tue,Home,D,1,1,Manchester Utd,1.11,0.58,35,3,West Ham
+2026-02-10,21:15,,Tue,Away,D,1,1,West Ham,0.58,1.11,65,3,Manchester Utd
+2026-02-11,20:30,,Wed,Home,W,1,0,Brighton,0.72,0.5,50,1,Aston Villa
+2026-02-11,20:30,,Wed,Away,L,0,1,Aston Villa,0.5,0.72,50,3,Brighton
+2026-02-11,20:30,,Wed,Home,L,2,3,Burnley,1.8,0.53,64,3,Crystal Palace
+2026-02-11,20:30,,Wed,Away,W,3,2,Crystal Palace,0.53,1.8,36,3,Burnley
+2026-02-11,20:30,,Wed,Home,W,3,0,Fulham,1.37,1.42,56,5,Manchester City
+2026-02-11,20:30,,Wed,Away,L,0,3,Manchester City,1.42,1.37,44,3,Fulham
+2026-02-11,20:30,,Wed,Home,D,0,0,Wolves,2.55,0.42,63,10,Nottingham
+2026-02-11,20:30,,Wed,Away,D,0,0,Nottingham,0.42,2.55,37,3,Wolves
+2026-02-11,21:15,,Wed,Home,L,0,1,Liverpool,0.63,2.53,43,2,Sunderland
+2026-02-11,21:15,,Wed,Away,W,1,0,Sunderland,2.53,0.63,57,3,Liverpool
+2026-02-12,21:00,,Thu,Home,D,1,1,Arsenal,1.5,0.6,41,3,Brentford
+2026-02-12,21:00,,Thu,Away,D,1,1,Brentford,0.6,1.5,59,2,Arsenal
+2026-02-18,21:00,,Wed,Home,D,2,2,Arsenal,0.29,1.61,42,2,Wolves
+2026-02-18,21:00,,Wed,Away,D,2,2,Wolves,1.61,0.29,58,4,Arsenal
+2026-02-21,16:00,,Sat,Home,D,1,1,Leeds,1.46,1.36,67,4,Aston Villa
+2026-02-21,16:00,,Sat,Away,D,1,1,Aston Villa,1.36,1.46,33,4,Leeds
+2026-02-21,16:00,,Sat,Home,L,0,2,Brighton,1.6,1.09,52,3,Brentford
+2026-02-21,16:00,,Sat,Away,W,2,0,Brentford,1.09,1.6,48,7,Brighton
+2026-02-21,16:00,,Sat,Home,D,1,1,Burnley,1.99,0.84,66,2,Chelsea
+2026-02-21,16:00,,Sat,Away,D,1,1,Chelsea,0.84,1.99,34,4,Burnley
+2026-02-21,18:30,,Sat,Home,D,0,0,Bournemouth,3.28,0.65,42,3,West Ham
+2026-02-21,18:30,,Sat,Away,D,0,0,West Ham,0.65,3.28,58,5,Bournemouth
+2026-02-21,21:00,,Sat,Home,W,2,1,Newcastle United,1.36,0.58,55,7,Manchester City
+2026-02-21,21:00,,Sat,Away,L,1,2,Manchester City,0.58,1.36,45,7,Newcastle United
+2026-02-22,15:00,,Sun,Home,W,1,0,Wolves,2.0,1.63,61,3,Crystal Palace
+2026-02-22,15:00,,Sun,Away,L,0,1,Crystal Palace,1.63,2.0,39,7,Wolves
+2026-02-22,15:00,,Sun,Home,L,0,1,Liverpool,1.19,1.73,47,2,Nottingham
+2026-02-22,15:00,,Sun,Away,W,1,0,Nottingham,1.73,1.19,53,4,Liverpool
+2026-02-22,15:00,,Sun,Home,L,1,3,Fulham,1.85,1.88,53,2,Sunderland
+2026-02-22,15:00,,Sun,Away,W,3,1,Sunderland,1.88,1.85,47,4,Fulham
+2026-02-22,17:30,,Sun,Home,L,1,4,Arsenal,0.76,2.07,40,5,Tottenham
+2026-02-22,17:30,,Sun,Away,W,4,1,Tottenham,2.07,0.76,60,7,Arsenal
+2026-02-23,21:00,,Mon,Home,L,0,1,Manchester Utd,0.64,1.27,48,4,Everton
+2026-02-23,21:00,,Mon,Away,W,1,0,Everton,1.27,0.64,52,3,Manchester Utd
+2026-02-27,21:00,,Fri,Home,W,2,0,Aston Villa,0.93,1.06,39,2,Wolves
+2026-02-27,21:00,,Fri,Away,L,0,2,Wolves,1.06,0.93,61,5,Aston Villa
+2026-02-28,13:30,,Sat,Home,D,1,1,Sunderland,1.71,1.43,62,5,Bournemouth
+2026-02-28,13:30,,Sat,Away,D,1,1,Bournemouth,1.43,1.71,38,4,Sunderland
+2026-02-28,16:00,,Sat,Home,L,3,4,Brentford,0.97,2.25,41,3,Burnley
+2026-02-28,16:00,,Sat,Away,W,4,3,Burnley,2.25,0.97,59,7,Brentford
+2026-02-28,16:00,,Sat,Home,W,5,2,West Ham,1.84,1.85,49,7,Liverpool
+2026-02-28,16:00,,Sat,Away,L,2,5,Liverpool,1.85,1.84,51,4,West Ham
+2026-02-28,16:00,,Sat,Home,L,2,3,Everton,1.03,2.13,66,7,Newcastle United
+2026-02-28,16:00,,Sat,Away,W,3,2,Newcastle United,2.13,1.03,34,5,Everton
+2026-02-28,18:30,,Sat,Home,L,0,1,Manchester City,1.49,2.0,33,2,Leeds
+2026-02-28,18:30,,Sat,Away,W,1,0,Leeds,2.0,1.49,67,5,Manchester City
+2026-03-01,15:00,,Sun,Home,W,2,1,Nottingham,1.32,0.8,54,7,Brighton
+2026-03-01,15:00,,Sun,Away,L,1,2,Brighton,0.8,1.32,46,4,Nottingham
+2026-03-01,15:00,,Sun,Home,W,2,1,Tottenham,2.28,0.88,54,4,Fulham
+2026-03-01,15:00,,Sun,Away,L,1,2,Fulham,0.88,2.28,46,1,Tottenham
+2026-03-01,15:00,,Sun,Home,W,2,1,Crystal Palace,2.16,0.39,61,11,Manchester Utd
+2026-03-01,15:00,,Sun,Away,L,1,2,Manchester Utd,0.39,2.16,39,3,Crystal Palace
+2026-03-01,17:30,,Sun,Home,W,2,1,Chelsea,1.09,1.07,41,5,Arsenal
+2026-03-01,17:30,,Sun,Away,L,1,2,Arsenal,1.07,1.09,59,3,Chelsea
+2026-03-03,20:30,,Tue,Home,D,0,0,Brentford,1.92,0.39,48,2,Bournemouth
+2026-03-03,20:30,,Tue,Away,D,0,0,Bournemouth,0.39,1.92,52,2,Brentford
+2026-03-03,20:30,,Tue,Home,W,2,0,Burnley,1.3,0.78,55,5,Everton
+2026-03-03,20:30,,Tue,Away,L,0,2,Everton,0.78,1.3,45,2,Burnley
+2026-03-03,20:30,,Tue,Home,L,0,1,Sunderland,1.15,0.86,70,4,Leeds
+2026-03-03,20:30,,Tue,Away,W,1,0,Leeds,0.86,1.15,30,1,Sunderland
+2026-03-03,21:15,,Tue,Home,W,2,1,Liverpool,0.44,1.83,34,3,Wolves
+2026-03-03,21:15,,Tue,Away,L,1,2,Wolves,1.83,0.44,66,7,Liverpool
+2026-03-04,20:30,,Wed,Home,L,1,4,Chelsea,0.78,3.6,43,4,Aston Villa
+2026-03-04,20:30,,Wed,Away,W,4,1,Aston Villa,3.6,0.78,57,8,Chelsea
+2026-03-04,20:30,,Wed,Home,L,0,1,Arsenal,0.82,0.46,60,3,Brighton
+2026-03-04,20:30,,Wed,Away,W,1,0,Brighton,0.46,0.82,40,2,Arsenal
+2026-03-04,20:30,,Wed,Home,L,0,1,West Ham,0.89,1.09,60,5,Fulham
+2026-03-04,20:30,,Wed,Away,W,1,0,Fulham,1.09,0.89,40,3,West Ham
+2026-03-04,20:30,,Wed,Home,D,2,2,Nottingham,2.12,0.97,70,7,Manchester City
+2026-03-04,20:30,,Wed,Away,D,2,2,Manchester City,0.97,2.12,30,4,Nottingham
+2026-03-04,21:15,,Wed,Home,W,2,1,Manchester Utd,2.48,1.49,45,5,Newcastle United
+2026-03-04,21:15,,Wed,Away,L,1,2,Newcastle United,1.49,2.48,55,5,Manchester Utd
+2026-03-05,21:00,,Thu,Home,L,1,3,Crystal Palace,1.09,1.78,40,4,Tottenham
+2026-03-05,21:00,,Thu,Away,W,3,1,Tottenham,1.78,1.09,60,4,Crystal Palace
+2026-03-14,16:00,,Sat,Home,D,0,0,Bournemouth,1.4,2.55,38,2,Burnley
+2026-03-14,16:00,,Sat,Away,D,0,0,Burnley,2.55,1.4,62,3,Bournemouth
+2026-03-14,16:00,,Sat,Home,L,0,1,Brighton,0.89,1.68,48,4,Sunderland
+2026-03-14,16:00,,Sat,Away,W,1,0,Sunderland,1.68,0.89,52,4,Brighton
+2026-03-14,18:30,,Sat,Home,W,2,0,Everton,2.7,1.05,64,7,Arsenal
+2026-03-14,18:30,,Sat,Away,L,0,2,Arsenal,1.05,2.7,36,3,Everton
+2026-03-14,18:30,,Sat,Home,L,0,1,Newcastle United,1.38,1.41,67,3,Chelsea
+2026-03-14,18:30,,Sat,Away,W,1,0,Chelsea,1.41,1.38,33,5,Newcastle United
+2026-03-14,21:00,,Sat,Home,D,1,1,Manchester City,0.54,2.03,28,1,West Ham
+2026-03-14,21:00,,Sat,Away,D,1,1,West Ham,2.03,0.54,72,6,Manchester City
+2026-03-15,15:00,,Sun,Home,D,0,0,Leeds,0.68,1.12,67,0,Crystal Palace
+2026-03-15,15:00,,Sun,Away,D,0,0,Crystal Palace,1.12,0.68,33,3,Leeds
+2026-03-15,15:00,,Sun,Home,W,3,1,Aston Villa,1.08,1.03,53,6,Manchester Utd
+2026-03-15,15:00,,Sun,Away,L,1,3,Manchester Utd,1.03,1.08,47,2,Aston Villa
+2026-03-15,15:00,,Sun,Home,D,0,0,Fulham,0.95,0.67,46,2,Nottingham
+2026-03-15,15:00,,Sun,Away,D,0,0,Nottingham,0.67,0.95,54,1,Fulham
+2026-03-15,17:30,,Sun,Home,D,1,1,Tottenham,1.7,1.18,63,4,Liverpool
+2026-03-15,17:30,,Sun,Away,D,1,1,Liverpool,1.18,1.7,37,7,Tottenham
+2026-03-16,21:00,,Mon,Home,D,2,2,Wolves,2.56,1.33,50,3,Brentford
+2026-03-16,21:00,,Mon,Away,D,2,2,Brentford,1.33,2.56,50,4,Wolves
+2026-03-20,21:00,,Fri,Home,D,2,2,Manchester Utd,1.81,1.77,55,5,Bournemouth
+2026-03-20,21:00,,Fri,Away,D,2,2,Bournemouth,1.77,1.81,45,5,Manchester Utd
+2026-03-21,13:30,,Sat,Home,W,2,1,Liverpool,2.18,1.02,47,7,Brighton
+2026-03-21,13:30,,Sat,Away,L,1,2,Brighton,1.02,2.18,53,5,Liverpool
+2026-03-21,16:00,,Sat,Home,W,3,1,Burnley,3.15,1.24,55,6,Fulham
+2026-03-21,16:00,,Sat,Away,L,1,3,Fulham,1.24,3.15,45,5,Burnley
+2026-03-21,18:30,,Sat,Home,W,3,0,Chelsea,1.17,0.93,36,9,Everton
+2026-03-21,18:30,,Sat,Away,L,0,3,Everton,0.93,1.17,64,4,Chelsea
+2026-03-21,21:00,,Sat,Home,D,0,0,Brentford,0.52,0.46,57,4,Leeds
+2026-03-21,21:00,,Sat,Away,D,0,0,Leeds,0.46,0.52,43,2,Brentford
+2026-03-22,13:00,,Sun,Home,L,1,2,Sunderland,1.29,2.44,60,4,Newcastle United
+2026-03-22,13:00,,Sun,Away,W,2,1,Newcastle United,2.44,1.29,40,7,Sunderland
+2026-03-22,15:15,,Sun,Home,W,2,0,West Ham,1.69,0.85,59,7,Aston Villa
+2026-03-22,15:15,,Sun,Away,L,0,2,Aston Villa,0.85,1.69,41,1,West Ham
+2026-03-22,15:15,,Sun,Home,L,0,3,Nottingham,1.25,1.34,59,3,Tottenham
+2026-03-22,15:15,,Sun,Away,W,3,0,Tottenham,1.34,1.25,41,7,Nottingham
+2026-04-10,21:00,,Fri,Home,W,4,0,Wolves,2.35,0.59,44,7,West Ham
+2026-04-10,21:00,,Fri,Away,L,0,4,West Ham,0.59,2.35,56,3,Wolves
+2026-04-11,13:30,,Sat,Home,L,1,2,Bournemouth,2.32,1.19,52,3,Arsenal
+2026-04-11,13:30,,Sat,Away,W,2,1,Arsenal,1.19,2.32,48,3,Bournemouth
+2026-04-11,16:00,,Sat,Home,D,2,2,Everton,2.84,1.54,55,4,Brentford
+2026-04-11,16:00,,Sat,Away,D,2,2,Brentford,1.54,2.84,45,7,Everton
+2026-04-11,16:00,,Sat,Home,L,0,2,Brighton,0.87,1.93,50,5,Burnley
+2026-04-11,16:00,,Sat,Away,W,2,0,Burnley,1.93,0.87,50,6,Brighton
+2026-04-11,18:30,,Sat,Home,W,2,0,Fulham,1.59,1.04,53,5,Liverpool
+2026-04-11,18:30,,Sat,Away,L,0,2,Liverpool,1.04,1.59,47,4,Fulham
+2026-04-12,15:00,,Sun,Home,W,2,1,Newcastle United,2.57,1.14,41,5,Crystal Palace
+2026-04-12,15:00,,Sun,Away,L,1,2,Crystal Palace,1.14,2.57,59,3,Newcastle United
+2026-04-12,15:00,,Sun,Home,D,1,1,Aston Villa,1.15,1.02,41,4,Nottingham
+2026-04-12,15:00,,Sun,Away,D,1,1,Nottingham,1.02,1.15,59,5,Aston Villa
+2026-04-12,15:00,,Sun,Home,W,1,0,Tottenham,1.33,0.83,52,2,Sunderland
+2026-04-12,15:00,,Sun,Away,L,0,1,Sunderland,0.83,1.33,48,7,Tottenham
+2026-04-12,17:30,,Sun,Home,L,0,3,Manchester City,1.14,2.29,37,3,Chelsea
+2026-04-12,17:30,,Sun,Away,W,3,0,Chelsea,2.29,1.14,63,8,Manchester City
+2026-04-13,21:00,,Mon,Home,L,1,2,Leeds,1.27,2.57,53,9,Manchester Utd
+2026-04-13,21:00,,Mon,Away,W,2,1,Manchester Utd,2.57,1.27,47,6,Leeds
+2026-04-18,13:30,,Sat,Home,D,0,0,Fulham,1.43,0.78,48,4,Brentford
+2026-04-18,13:30,,Sat,Away,D,0,0,Brentford,0.78,1.43,52,0,Fulham
+2026-04-18,16:00,,Sat,Home,W,3,0,Wolves,2.82,0.56,56,6,Leeds
+2026-04-18,16:00,,Sat,Away,L,0,3,Leeds,0.56,2.82,44,2,Wolves
+2026-04-18,16:00,,Sat,Home,L,1,2,Bournemouth,1.59,2.98,53,3,Newcastle United
+2026-04-18,16:00,,Sat,Away,W,2,1,Newcastle United,2.98,1.59,47,3,Bournemouth
+2026-04-18,18:30,,Sat,Home,D,2,2,Brighton,1.09,0.82,42,6,Tottenham
+2026-04-18,18:30,,Sat,Away,D,2,2,Tottenham,0.82,1.09,58,3,Brighton
+2026-04-18,21:00,,Sat,Home,L,0,1,Manchester Utd,1.57,0.29,59,3,Chelsea
+2026-04-18,21:00,,Sat,Away,W,1,0,Chelsea,0.29,1.57,41,1,Manchester Utd
+2026-04-19,15:00,,Sun,Home,W,4,3,Sunderland,2.84,1.73,50,7,Aston Villa
+2026-04-19,15:00,,Sun,Away,L,3,4,Aston Villa,1.73,2.84,50,7,Sunderland
+2026-04-19,15:00,,Sun,Home,L,1,2,Liverpool,0.79,1.45,43,4,Everton
+2026-04-19,15:00,,Sun,Away,W,2,1,Everton,1.45,0.79,57,6,Liverpool
+2026-04-19,15:00,,Sun,Home,W,4,1,Burnley,1.19,0.35,51,4,Nottingham
+2026-04-19,15:00,,Sun,Away,L,1,4,Nottingham,0.35,1.19,49,3,Burnley
+2026-04-19,17:30,,Sun,Home,W,2,1,Arsenal,1.36,1.62,59,5,Manchester City
+2026-04-19,17:30,,Sun,Away,L,1,2,Manchester City,1.62,1.36,41,3,Arsenal
+2026-04-20,21:00,,Mon,Home,D,0,0,West Ham,0.73,0.61,54,1,Crystal Palace
+2026-04-20,21:00,,Mon,Away,D,0,0,Crystal Palace,0.61,0.73,46,4,West Ham
+2026-04-21,21:00,,Tue,Home,W,3,0,Chelsea,2.13,0.37,53,9,Brighton
+2026-04-21,21:00,,Tue,Away,L,0,3,Brighton,0.37,2.13,47,0,Chelsea
+2026-04-22,21:00,,Wed,Home,D,2,2,Leeds,1.65,0.81,60,7,Bournemouth
+2026-04-22,21:00,,Wed,Away,D,2,2,Bournemouth,0.81,1.65,40,3,Leeds
+2026-04-22,21:00,,Wed,Home,L,0,1,Manchester City,0.63,3.36,35,1,Burnley
+2026-04-22,21:00,,Wed,Away,W,1,0,Burnley,3.36,0.63,65,9,Manchester City
+2026-04-24,21:00,,Fri,Home,L,0,5,Nottingham,0.7,1.1,61,4,Sunderland
+2026-04-24,21:00,,Fri,Away,W,5,0,Sunderland,1.1,0.7,39,6,Nottingham
+2026-04-25,13:30,,Sat,Home,W,1,0,Aston Villa,1.17,0.93,39,6,Fulham
+2026-04-25,13:30,,Sat,Away,L,0,1,Fulham,0.93,1.17,61,1,Aston Villa
+2026-04-25,16:00,,Sat,Home,W,3,1,Crystal Palace,1.14,2.26,53,3,Liverpool
+2026-04-25,16:00,,Sat,Away,L,1,3,Liverpool,2.26,1.14,47,7,Crystal Palace
+2026-04-25,16:00,,Sat,Home,W,2,1,Everton,1.17,1.45,44,3,West Ham
+2026-04-25,16:00,,Sat,Away,L,1,2,West Ham,1.45,1.17,56,3,Everton
+2026-04-25,16:00,,Sat,Home,L,0,1,Tottenham,0.61,1.04,41,2,Wolves
+2026-04-25,16:00,,Sat,Away,W,1,0,Wolves,1.04,0.61,59,2,Tottenham
+2026-04-25,18:30,,Sat,Home,W,1,0,Newcastle United,0.49,1.0,45,4,Arsenal
+2026-04-25,18:30,,Sat,Away,L,0,1,Arsenal,1.0,0.49,55,3,Newcastle United
+2026-04-27,21:00,,Mon,Home,W,2,1,Brentford,1.36,1.17,45,6,Manchester Utd
+2026-04-27,21:00,,Mon,Away,L,1,2,Manchester Utd,1.17,1.36,55,4,Brentford
+2026-05-01,21:00,,Fri,Home,W,3,1,Burnley,1.64,0.57,48,8,Leeds
+2026-05-01,21:00,,Fri,Away,L,1,3,Leeds,0.57,1.64,52,3,Burnley
+2026-05-02,16:00,,Sat,Home,W,3,0,West Ham,2.27,0.92,48,6,Brentford
+2026-05-02,16:00,,Sat,Away,L,0,3,Brentford,0.92,2.27,52,4,West Ham
+2026-05-02,16:00,,Sat,Home,W,3,1,Brighton,3.15,1.53,32,6,Newcastle United
+2026-05-02,16:00,,Sat,Away,L,1,3,Newcastle United,1.53,3.15,68,4,Brighton
+2026-05-02,16:00,,Sat,Home,D,1,1,Sunderland,1.72,0.66,58,7,Wolves
+2026-05-02,16:00,,Sat,Away,D,1,1,Wolves,0.66,1.72,42,2,Sunderland
+2026-05-02,18:30,,Sat,Home,W,3,0,Fulham,3.23,0.37,54,9,Arsenal
+2026-05-02,18:30,,Sat,Away,L,0,3,Arsenal,0.37,3.23,46,1,Fulham
+2026-05-03,15:00,,Sun,Home,W,3,0,Crystal Palace,2.08,0.89,50,5,Bournemouth
+2026-05-03,15:00,,Sun,Away,L,0,3,Bournemouth,0.89,2.08,50,1,Crystal Palace
+2026-05-03,16:30,,Sun,Home,W,3,2,Liverpool,2.35,0.88,37,6,Manchester Utd
+2026-05-03,16:30,,Sun,Away,L,2,3,Manchester Utd,0.88,2.35,63,5,Liverpool
+2026-05-03,20:00,,Sun,Home,L,1,2,Tottenham,0.32,0.99,45,1,Aston Villa
+2026-05-03,20:00,,Sun,Away,W,2,1,Aston Villa,0.99,0.32,55,5,Tottenham
+2026-05-04,16:00,,Mon,Home,L,1,3,Nottingham,2.15,2.05,67,5,Chelsea
+2026-05-04,16:00,,Mon,Away,W,3,1,Chelsea,2.05,2.15,33,4,Nottingham
+2026-05-04,21:00,,Mon,Home,D,3,3,Manchester City,2.72,1.53,24,6,Everton
+2026-05-04,21:00,,Mon,Away,D,3,3,Everton,1.53,2.72,76,4,Manchester City
+2026-05-09,13:30,,Sat,Home,D,1,1,Chelsea,0.55,0.49,48,3,Liverpool
+2026-05-09,13:30,,Sat,Away,D,1,1,Liverpool,0.49,0.55,52,3,Chelsea
+2026-05-09,16:00,,Sat,Home,W,3,0,Wolves,1.46,0.42,72,6,Brighton
+2026-05-09,16:00,,Sat,Away,L,0,3,Brighton,0.42,1.46,28,1,Wolves
+2026-05-09,16:00,,Sat,Home,L,0,1,Bournemouth,1.24,0.73,60,2,Fulham
+2026-05-09,16:00,,Sat,Away,W,1,0,Fulham,0.73,1.24,40,5,Bournemouth
+2026-05-09,16:00,,Sat,Home,D,0,0,Manchester Utd,1.17,0.57,51,4,Sunderland
+2026-05-09,16:00,,Sat,Away,D,0,0,Sunderland,0.57,1.17,49,1,Manchester Utd
+2026-05-09,18:30,,Sat,Home,W,3,0,Brentford,2.98,0.24,59,10,Manchester City
+2026-05-09,18:30,,Sat,Away,L,0,3,Manchester City,0.24,2.98,41,2,Brentford
+2026-05-10,15:00,,Sun,Home,D,2,2,Aston Villa,1.79,1.44,33,6,Burnley
+2026-05-10,15:00,,Sun,Away,D,2,2,Burnley,1.44,1.79,67,7,Aston Villa
+2026-05-10,15:00,,Sun,Home,D,2,2,Everton,2.56,1.59,59,8,Crystal Palace
+2026-05-10,15:00,,Sun,Away,D,2,2,Crystal Palace,1.59,2.56,41,6,Everton
+2026-05-10,15:00,,Sun,Home,D,1,1,Newcastle United,1.1,1.48,46,6,Nottingham
+2026-05-10,15:00,,Sun,Away,D,1,1,Nottingham,1.48,1.1,54,6,Newcastle United
+2026-05-10,17:30,,Sun,Home,L,0,1,Arsenal,1.16,1.18,36,3,West Ham
+2026-05-10,17:30,,Sun,Away,W,1,0,West Ham,1.18,1.16,64,4,Arsenal
+2026-05-11,21:00,,Mon,Home,D,1,1,Leeds,1.27,1.34,57,3,Tottenham
+2026-05-11,21:00,,Mon,Away,D,1,1,Tottenham,1.34,1.27,43,4,Leeds
+2026-05-13,21:00,,Wed,Home,W,3,0,Crystal Palace,1.66,0.73,73,4,Manchester City
+2026-05-13,21:00,,Wed,Away,L,0,3,Manchester City,0.73,1.66,27,2,Crystal Palace
+2026-05-15,21:00,,Fri,Home,W,4,2,Liverpool,1.91,1.56,45,9,Aston Villa
+2026-05-15,21:00,,Fri,Away,L,2,4,Aston Villa,1.56,1.91,55,5,Liverpool
+2026-05-17,13:30,,Sun,Home,W,3,2,Nottingham,4.57,1.89,48,8,Manchester Utd
+2026-05-17,13:30,,Sun,Away,L,2,3,Manchester Utd,1.89,4.57,52,4,Nottingham
+2026-05-17,16:00,,Sun,Home,D,2,2,Crystal Palace,1.72,1.72,58,3,Brentford
+2026-05-17,16:00,,Sun,Away,D,2,2,Brentford,1.72,1.72,42,5,Crystal Palace
+2026-05-17,16:00,,Sun,Home,L,1,3,Sunderland,1.04,0.76,47,4,Everton
+2026-05-17,16:00,,Sun,Away,W,3,1,Everton,0.76,1.04,53,3,Sunderland
+2026-05-17,16:00,,Sun,Home,W,1,0,Brighton,0.39,3.06,34,1,Leeds
+2026-05-17,16:00,,Sun,Away,L,0,1,Leeds,3.06,0.39,66,8,Brighton
+2026-05-17,16:00,,Sun,Home,D,1,1,Fulham,1.39,1.59,31,3,Wolves
+2026-05-17,16:00,,Sun,Away,D,1,1,Wolves,1.59,1.39,69,5,Fulham
+2026-05-17,18:30,,Sun,Home,W,3,1,West Ham,1.73,0.95,55,7,Newcastle United
+2026-05-17,18:30,,Sun,Away,L,1,3,Newcastle United,0.95,1.73,45,8,West Ham
+2026-05-18,21:00,,Mon,Home,W,1,0,Burnley,1.29,0.19,61,3,Arsenal
+2026-05-18,21:00,,Mon,Away,L,0,1,Arsenal,0.19,1.29,39,0,Burnley
+2026-05-19,20:30,,Tue,Home,D,1,1,Manchester City,2.25,1.48,46,2,Bournemouth
+2026-05-19,20:30,,Tue,Away,D,1,1,Bournemouth,1.48,2.25,54,5,Manchester City
+2026-05-19,21:15,,Tue,Home,W,2,1,Tottenham,0.63,1.72,44,4,Chelsea
+2026-05-19,21:15,,Tue,Away,L,1,2,Chelsea,1.72,0.63,56,3,Tottenham
+2026-05-24,17:00,,Sun,Home,L,0,3,Manchester Utd,0.78,1.66,52,2,Brighton
+2026-05-24,17:00,,Sun,Away,W,3,0,Brighton,1.66,0.78,48,7,Manchester Utd
+2026-05-24,17:00,,Sun,Home,D,1,1,Wolves,0.98,2.09,70,8,Burnley
+2026-05-24,17:00,,Sun,Away,D,1,1,Burnley,2.09,0.98,30,4,Wolves
+2026-05-24,17:00,,Sun,Home,L,1,2,Arsenal,0.98,2.53,40,3,Crystal Palace
+2026-05-24,17:00,,Sun,Away,W,2,1,Crystal Palace,2.53,0.98,60,7,Arsenal
+2026-05-24,17:00,,Sun,Home,W,2,0,Newcastle United,1.81,0.31,45,6,Fulham
+2026-05-24,17:00,,Sun,Away,L,0,2,Fulham,0.31,1.81,55,2,Newcastle United
+2026-05-24,17:00,,Sun,Home,D,1,1,Brentford,3.04,1.57,60,8,Liverpool
+2026-05-24,17:00,,Sun,Away,D,1,1,Liverpool,1.57,3.04,40,2,Brentford
+2026-05-24,17:00,,Sun,Home,L,1,2,Aston Villa,1.34,1.77,52,3,Manchester City
+2026-05-24,17:00,,Sun,Away,W,2,1,Manchester City,1.77,1.34,48,5,Aston Villa
+2026-05-24,17:00,,Sun,Home,D,1,1,Bournemouth,1.73,0.95,45,5,Nottingham
+2026-05-24,17:00,,Sun,Away,D,1,1,Nottingham,0.95,1.73,55,4,Bournemouth
+2026-05-24,17:00,,Sun,Home,W,2,1,Chelsea,1.84,0.89,44,6,Sunderland
+2026-05-24,17:00,,Sun,Away,L,1,2,Sunderland,0.89,1.84,56,3,Chelsea
+2026-05-24,17:00,,Sun,Home,W,1,0,Everton,1.15,0.41,50,2,Tottenham
+2026-05-24,17:00,,Sun,Away,L,0,1,Tottenham,0.41,1.15,50,1,Everton
+2026-05-24,17:00,,Sun,Home,W,3,0,Leeds,2.61,1.59,42,9,West Ham
+2026-05-24,17:00,,Sun,Away,L,0,3,West Ham,1.59,2.61,58,3,Leeds
