@@ -149,14 +149,6 @@ Run commands from the repository root (all scripts use relative paths to `Datase
 
 Trains an XGBoost classifier on historical Premier League data and prints evaluation metrics.
 
-### Run the foundation model with draw-specific features
-
-```powershell
-.\.venv\Scripts\python.exe PL_Predictor_draw_features.py
-```
-
-Trains a model with 10 additional draw-specific features (`h2h_draw_rate`, `odds_balance`, `draw_value`, etc.) and uses Optuna hyperparameter tuning (100 trials). This is the foundation model that led to the betting strategy discovery.
-
 ### Run the validated betting strategy
 
 ```powershell
@@ -171,7 +163,7 @@ Filters to hot form teams (≥12 points in last 5 games) and simulates fixed-sta
 .\.venv\Scripts\python.exe PL_Predictor_validate_holdout.py
 ```
 
-Tests the betting strategy on the 2024-2025 season (completely unseen data) to verify the edge generalizes.
+Tests the betting strategy on the 2024-2026 season (completely unseen data) to verify the edge generalizes.
 
 ## Model Pipeline
 
