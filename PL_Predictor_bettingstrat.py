@@ -1,20 +1,3 @@
-"""
-Premier League Predictor with Hot Form Teams WIN Strategy - FIXED STAKES VERSION
-
-Purpose: Validate the betting edge with fixed stakes (no Kelly compounding)
-
-The Kelly Criterion version showed:
-- Win rate: 69.6% at average odds 3.80
-- But bankroll exploded to $39M due to miscalibrated probabilities
-- Model thinks win prob is 89.5% when reality is ~70%
-
-This version uses FIXED $10 stakes to answer:
-- Is the 69.6% win rate real or test set overfitting?
-- What's the realistic ROI without Kelly compounding?
-- Is this a genuine market inefficiency?
-
-If the edge holds with fixed stakes, the model has found something real.
-"""
 
 import pandas as pd
 import numpy as np
