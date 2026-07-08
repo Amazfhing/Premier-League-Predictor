@@ -67,7 +67,8 @@ The target classes are encoded as:
 Premier-League-Predictor/
 ├── Datasets/
 │   └── matches.csv                       # Unified FBRef match stats + 1xBet odds (seasons 15-26)
-├── PL_Predictor_bettingstrat.py           # Validated hot form teams WIN betting strategy
+├── PL_Predictor.py                        # Predictor model without any betting strategy
+├── PL_Predictor_bettingstrat.py           # Hot form teams WIN betting strategy using the predictor model
 ├── PL_Predictor_validate_holdout.py       # Holdout validation on 2024-2025 season
 ├── requirements.txt                       # Python dependencies
 └── README.md                              # This file
