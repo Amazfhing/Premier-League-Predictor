@@ -1,259 +1,221 @@
 import pandas as pd
-
-# Read matches data (now includes betting odds: odds_H, odds_D, odds_A)
-matches = pd.read_csv("Datasets/matches.csv", index_col=0)
-
-import optuna
-from xgboost import XGBClassifier
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import accuracy_score, precision_score, ConfusionMatrixDisplay
-import matplotlib.pyplot as plt
 import numpy as np
+import optuna
+from sklearn.model_selection import TimeSeriesSplit
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, precision_score, confusion_matrix, f1_score, ConfusionMatrixDisplay
+from sklearn.utils.class_weight import compute_sample_weight
+from sklearn.calibration import CalibratedClassifierCV
+import matplotlib.pyplot as plt
 
+
+matches = pd.read_csv("Datasets/matches.csv", index_col=0)
 matches["date"] = pd.to_datetime(matches["date"])
 
-result_map = {"L": 0, "D": 1, "W": 2}
-matches["target"] = matches["result"].map(result_map)
+# Convert odds to team perspective
+matches["team_odds"] = np.where(matches["venue"] == "Home", matches["odds_H"], matches["odds_A"])
+matches["opp_odds"] = np.where(matches["venue"] == "Home", matches["odds_A"], matches["odds_H"])
+matches["draw_odds"] = matches["odds_D"]
 
-# Add Points column (Win=3, Draw=1, Loss=0)
-matches["points"] = matches["target"].map({2: 3, 1: 1, 0: 0})
+# Encode results
+result_mapping = {"L": 0, "D": 1, "W": 2}
+matches["result_code"] = matches["result"].map(result_mapping)
+matches["points"] = matches["result_code"].map({0: 0, 1: 1, 2: 3})
+matches["is_draw"] = (matches["result"] == "D").astype(int)
 
-# One-Hot Encoding for categorical features
-matches = pd.concat([matches, pd.get_dummies(matches[["venue", "opponent"]], drop_first=True)], axis=1)
-
-matches["hour"] = matches["time"].str.replace(":.+", "", regex=True).astype(
-    "int")  ## converting hours to number in case a team plays better at a certain time
-matches["day"] = matches["date"].dt.dayofweek  ## converting day of week of game to a number
-
-# Generate a list of predictors dynamically based on one-hot encoding
-predictors = ["hour", "day"] + [col for col in matches.columns if
-                                col.startswith("venue_") or col.startswith("opponent_")]
-
-grouped_matches = matches.groupby("team")
-group = grouped_matches.get_group("Manchester United").sort_values("date")
-
-
-def rolling_averages(group, cols, new_cols):  # function to take into consideration form of a team
+# Rolling averages function
+def rolling_averages(group, cols, new_cols, window_size=3):
     group = group.sort_values("date")
-
-    # 1. Rest Days (days since last match)
-    group["rest_days"] = group["date"].diff().dt.days
-
-    # 2. Short-term form (3-game rolling average)
-    rolling_stats = group[cols].rolling(3, closed='left').mean()
+    group["rest_days"] = group["date"].diff().dt.days.fillna(7)
+    rolling_stats = group[cols].shift(1).rolling(window=window_size, closed='left').mean()
     group[new_cols] = rolling_stats
-
-    # 3. Long-term form (10-game rolling average)
-    new_cols_10 = [f"{c}_10_rolling" for c in cols]
-    group[new_cols_10] = group[cols].rolling(10, closed='left').mean()
-
-    # 4. Rolling Points (sum of points over last 5 games)
-    group["points_last_5"] = group["points"].rolling(5, closed='left').sum()
-
-
-    group = group.dropna(subset=new_cols + new_cols_10 + ["rest_days", "points_last_5"])
+    group = group.dropna(subset=new_cols)
     return group
 
-
-
-cols = ["gf", "ga", "sot"]
-
-# Prefer xG over actual goals if available (more stable, less noisy)
+# Feature columns
+cols = ["gf", "ga", "sh", "sot", "dist", "fk", "pk", "pkatt"]
 if "xg" in matches.columns and "xga" in matches.columns:
     cols.extend(["xg", "xga"])
 
-new_cols = [f"{c}_rolling" for c in cols]  # creating new columns with rolling average values
-new_cols_10 = [f"{c}_10_rolling" for c in cols]
+new_cols = [f"{c}_rolling" for c in cols]
 
-matches_rolling = matches.groupby("team").apply(lambda x: rolling_averages(x, cols, new_cols))
-matches_rolling = matches_rolling.droplevel('team')
+# Apply rolling averages
+matches_rolling = matches.groupby("team", group_keys=False).apply(
+    lambda x: rolling_averages(x, cols, new_cols, window_size=3), include_groups=True
+)
 
-matches_rolling.index = range(matches_rolling.shape[0])
+# 10-match rolling
+cols_10 = cols.copy()
+new_cols_10 = [f"{c}_rolling_10" for c in cols_10]
+matches_rolling = matches_rolling.groupby("team", group_keys=False).apply(
+    lambda x: rolling_averages(x, cols_10, new_cols_10, window_size=10), include_groups=True
+)
 
-features = predictors + new_cols + new_cols_10 + ["rest_days", "points_last_5"]
+# Points last 5
+def add_points_last_5(group):
+    group = group.sort_values("date")
+    group["points_last_5"] = group["points"].shift(1).rolling(5, closed='left').sum()
+    return group
 
+matches_rolling = matches_rolling.groupby("team", group_keys=False).apply(add_points_last_5, include_groups=True)
+matches_rolling = matches_rolling.dropna(subset=["points_last_5"])
 
-if "odds_H" in matches_rolling.columns:
-    features.extend(["odds_H", "odds_D", "odds_A"])
+# Draw-specific features
+def add_draw_features(group):
+    group = group.sort_values("date")
+    group["gf_rolling"] = group["gf"].shift(1).rolling(5, closed='left').mean()
+    group["ga_rolling"] = group["ga"].shift(1).rolling(5, closed='left').mean()
+    group["low_scoring"] = ((group["gf_rolling"] < 1.2) & (group["ga_rolling"] < 1.2)).astype(int)
+    group["balanced_form"] = ((group["points_last_5"] >= 6) & (group["points_last_5"] <= 9)).astype(int)
+    group["recent_draws"] = group["is_draw"].shift(1).rolling(5, closed='left').sum().fillna(0)
+    group["goals_variance"] = (group["gf"] - group["ga"]).shift(1).rolling(5, closed='left').std().fillna(0)
+    return group
+
+matches_rolling = matches_rolling.groupby("team", group_keys=False).apply(add_draw_features, include_groups=True)
+
+# H2H draw rate
+h2h_draws = matches_rolling.groupby(["team", "opponent"])["is_draw"].transform("mean")
+matches_rolling["h2h_draw_rate"] = h2h_draws
+
+# Odds-based features
+matches_with_odds = matches_rolling.dropna(subset=["team_odds", "draw_odds", "opp_odds"]).copy()
+matches_with_odds["odds_balance"] = np.abs(
+    matches_with_odds["team_odds"] - matches_with_odds["opp_odds"]
+) / matches_with_odds["draw_odds"]
+matches_with_odds["draw_value"] = 1 / matches_with_odds["draw_odds"]
+matches_with_odds["favorite_strength"] = np.maximum(
+    1 / matches_with_odds["team_odds"], 1 / matches_with_odds["opp_odds"]
+) - np.minimum(
+    1 / matches_with_odds["team_odds"], 1 / matches_with_odds["opp_odds"]
+)
+
+# Time features
+matches_with_odds["hour"] = matches_with_odds["time"].str.split(':').str[0].astype(int)
+matches_with_odds["day"] = matches_with_odds["date"].dt.dayofweek
+
+# One-hot encoding
+matches_encoded = pd.get_dummies(matches_with_odds, columns=["venue", "opponent"], dtype=int)
+
+# Build predictors
+venue_cols = [col for col in matches_encoded.columns if col.startswith("venue_")]
+opponent_cols = [col for col in matches_encoded.columns if col.startswith("opponent_")]
+predictors = (
+    new_cols + new_cols_10 +
+    ["hour", "day", "rest_days", "points_last_5"] +
+    ["h2h_draw_rate", "odds_balance", "draw_value", "favorite_strength",
+     "low_scoring", "balanced_form", "recent_draws", "goals_variance"] +
+    ["team_odds", "draw_odds", "opp_odds"] +
+    venue_cols + opponent_cols
+)
+
+# Train/test split
+train = matches_encoded[matches_encoded["date"] < "2022-01-01"].copy()
+test = matches_encoded[matches_encoded["date"] >= "2022-01-01"].copy()
+
+train = train.dropna(subset=predictors)
+test = test.dropna(subset=predictors)
+
+# Optuna hyperparameter optimization
 
 def objective(trial):
-    param = {
-        "n_estimators": trial.suggest_int("n_estimators", 50, 200),
+
+    params = {
+        "n_estimators": trial.suggest_int("n_estimators", 100, 300),
         "max_depth": trial.suggest_int("max_depth", 3, 10),
-        "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.3),
-        "subsample": trial.suggest_float("subsample", 0.5, 1.0),
-        "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
-        "random_state": 1,
-        "objective": "multi:softmax",
-        "num_class": 3
+        "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.2),
+        "subsample": trial.suggest_float("subsample", 0.6, 1.0),
+        "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),
+        "gamma": trial.suggest_float("gamma", 0, 0.5),
+        "min_child_weight": trial.suggest_int("min_child_weight", 1, 7),
+        "random_state": 42,
+        "objective": "multi:softprob"
     }
-    xgb = XGBClassifier(**param) #Feeds the parameters into the actual XGBoost model
 
+    # TimeSeriesSplit cross-validation on training data
     tscv = TimeSeriesSplit(n_splits=3)
-    precisions = []
+    f1_scores = []
 
-    data = matches_rolling[matches_rolling["date"] < '2022-01-01'].sort_values("date")
-    X = data[features]
-    y = data["target"]
+    for train_idx, val_idx in tscv.split(train):
+        X_train_fold = train.iloc[train_idx][predictors]
+        y_train_fold = train.iloc[train_idx]["result_code"]
+        X_val_fold = train.iloc[val_idx][predictors]
+        y_val_fold = train.iloc[val_idx]["result_code"]
 
-    for train_index, test_index in tscv.split(X):
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+        # Calculate sample weights for this fold
+        fold_weights = compute_sample_weight(class_weight="balanced", y=y_train_fold)
 
-        xgb.fit(X_train, y_train)
-        preds = xgb.predict(X_test)
-        precisions.append(precision_score(y_test, preds, average="macro", zero_division=0))
+        # Train and evaluate
+        model = XGBClassifier(**params)
+        model.fit(X_train_fold, y_train_fold, sample_weight=fold_weights, verbose=False)
+        preds = model.predict(X_val_fold)
+        f1 = f1_score(y_val_fold, preds, average="macro", zero_division=0)
+        f1_scores.append(f1)
 
-    return sum(precisions) / len(precisions)
+    return np.mean(f1_scores)
 
-study = optuna.create_study(direction="maximize")
-study.optimize(objective, n_trials=200)
-best_params = study.best_params
-best_params["random_state"] = 1
-best_params["objective"] = "multi:softmax"
-best_params["num_class"] = 3
+# Run Optuna optimization
+study = optuna.create_study(direction="maximize", study_name="draw_features_optimization")
+study.optimize(objective, n_trials=100, show_progress_bar=True)
 
-# Best parameters gathered from previous Optuna runs
+print(f"Best F1 score: {study.best_value:.4f}")
+print(f"\nBest hyperparameters:")
+for key, value in study.best_params.items():
+    print(f"  {key}: {value}")
 
-model = XGBClassifier(**best_params)
+# Train final model with best hyperparameters
 
-def make_predictions(data, predictors):
-    """
-    TimeSeriesSplit for train/validation/test:
-    - Test set: 2023-08 onwards (held-out, never used for training)
-    - Train/Val: < 2023-08, split using TimeSeriesSplit(n_splits=3)
-    - Uses the last fold (most training data) for final model
-    """
-    # Hold out test set (most recent seasons - never touched during training)
-    test_cutoff = '2023-08-01'
-    train_val_data = data[data["date"] < test_cutoff].sort_values("date")
-    test_data = data[data["date"] >= test_cutoff].sort_values("date")
+best_params = study.best_params.copy()
+best_params.update({"random_state": 42, "objective": "multi:softprob"})
 
-    # TimeSeriesSplit on train_val_data to create expanding training sets
-    tscv = TimeSeriesSplit(n_splits=3)
-    X_train_val = train_val_data[predictors]
-    y_train_val = train_val_data["target"]
+# Calculate sample weights for full training set
+sample_weights = compute_sample_weight(class_weight="balanced", y=train["result_code"])
 
-    # Get all splits and use the last one (most data for training)
-    splits = list(tscv.split(X_train_val))
-    train_idx, val_idx = splits[-1]  # Last split has most training data
+xgb_model = XGBClassifier(**best_params)
+xgb_model.fit(train[predictors], train["result_code"], sample_weight=sample_weights)
 
-    X_train = X_train_val.iloc[train_idx]
-    y_train = y_train_val.iloc[train_idx]
-    X_val = X_train_val.iloc[val_idx]
-    y_val = y_train_val.iloc[val_idx]
+# Calibrate probabilities
+calibrated_model = CalibratedClassifierCV(xgb_model, method="isotonic", cv="prefit")
+calibrated_model.fit(train[predictors], train["result_code"])
 
-    # Train the model on the training fold
-    model.fit(X_train, y_train)
+# Predict
+y_pred_proba = calibrated_model.predict_proba(test[predictors])
+y_pred = calibrated_model.predict(test[predictors])
 
-    # Validation metrics (on the validation fold)
-    val_preds = model.predict(X_val)
-    val_accuracy = accuracy_score(y_val, val_preds)
-    val_precision = precision_score(y_val, val_preds, average="macro", zero_division=0)
-
-    # Get date ranges for reporting
-    train_dates = train_val_data.iloc[train_idx]["date"]
-    val_dates = train_val_data.iloc[val_idx]["date"]
-
-    print(f"\nTimeSeriesSplit Validation (Last Fold of 3):")
-    print(f"  Training: {train_dates.min().date()} to {train_dates.max().date()} ({len(X_train)} samples)")
-    print(f"  Validation: {val_dates.min().date()} to {val_dates.max().date()} ({len(X_val)} samples)")
-    print(f"  Accuracy: {val_accuracy:.2%}")
-    print(f"  Precision: {val_precision:.2%}")
-
-    # Test set evaluation (held-out data)
-    X_test = test_data[predictors]
-    y_test = test_data["target"]
-    test_preds = model.predict(X_test)
-
-    combined = pd.DataFrame(
-        dict(actual=y_test, prediction=test_preds),
-        index=test_data.index
-    )
-    test_precision = precision_score(y_test, test_preds, average="macro", zero_division=0)
-
-    return combined, test_precision
+# Evaluate
+accuracy = accuracy_score(test["result_code"], y_pred)
+precision = precision_score(test["result_code"], y_pred, average="macro", zero_division=0)
+conf_matrix = confusion_matrix(test["result_code"], y_pred)
 
 
-combined, precision = make_predictions(matches_rolling, features)
-
-combined = combined.merge(matches_rolling[["date", "team", "opponent", "result"]], left_index=True, right_index=True)
-
-
-class MissingDict(dict):
-    __missing__ = lambda self, key: key  # case when a team name is missing
-
-
-map_values = {
-    "Brighton and Hove Albion": "Brighton",
-    "Manchester United": "Manchester Utd",
-    "Tottenham Hotspur": "Tottenham",
-    "West Ham United": "West Ham",
-    "Wolverhampton Wanderers": "Wolves"
-}
-mapping = MissingDict(**map_values)
-
-combined["new_team"] = combined["team"].map(mapping)
-
-merged = combined.merge(combined, left_on=["date", "new_team"], right_on=["date", "opponent"])
-accuracy = accuracy_score(combined["actual"], combined["prediction"])
-
-print("\n" + "="*80)
-print("OPTIMIZED MODEL EVALUATION (Reduced Feature Set)")
-print("="*80)
-print(f"\nTotal Features: {len(features)}")
-print(f"Accuracy:  {accuracy:.2%} | Precision: {precision:.2%}")
-print("\nRemoved redundant features:")
-print("  - sh (total shots) - kept sot (shots on target) instead")
-print("  - dist (shot distance) - noisy, low predictive value")
-print("  - fk (free kicks) - rare events, low signal")
-print("  - pk, pkatt (penalties) - rare events, high correlation")
-print("\nKept core features:")
-print("  - gf, ga (goals for/against) - fundamental metrics")
-print("  - sot (shots on target) - quality shooting metric")
-print("  - xg, xga (if available) - more stable than actual goals")
-print("  - Both 3-game and 10-game rolling (captures short/long-term form)")
-print("  - Betting odds (team_odds, draw_odds, opp_odds)")
-print("  - Context (venue, opponent, hour, day, rest_days, points_last_5)")
-
-print("\n\nConfusion Matrix (0=Loss, 1=Draw, 2=Win):")
-
-fig, ax = plt.subplots(figsize=(8, 6))
-ConfusionMatrixDisplay.from_predictions(
-    combined["actual"],
-    combined["prediction"],
-    display_labels=["Loss", "Draw", "Win"],
-    cmap="Blues",
-    ax=ax
-)
-plt.title("Confusion Matrix - Premier League Predictions (Optimized)")
-plt.tight_layout()
-
-# Evaluate "Strong" Predictions
-strong_preds = merged[(merged["prediction_x"] == 2) & (merged["prediction_y"] == 0)]
-
-strong_draws = merged[(merged["prediction_x"] == 1) & (merged["prediction_y"] == 1)]
-
-if not strong_preds.empty:
-    strong_accuracy = accuracy_score(strong_preds["actual_x"], strong_preds["prediction_x"])
-    print(f"\nStrong Predictions (Both Models Agree): {len(strong_preds)} matches | Accuracy: {strong_accuracy:.2%}")
-else:
-    print("\nStrong Predictions: 0 matches found")
-
-if not strong_draws.empty:
-    print(f"Strong Draws Accuracy: {accuracy_score(strong_draws['actual_x'], strong_draws['prediction_x']):.2%}")
-
-# --- Feature Importance Chart ---
-importances = model.feature_importances_
-indices = np.argsort(importances)[::-1][:20]  # Get top 20 directly
-
-plt.figure(figsize=(10, 8))
-plt.title("Top 20 Feature Importances (XGBoost - Optimized Model)")
-plt.barh(range(len(indices)), importances[indices], align="center")
-plt.yticks(range(len(indices)), [features[i] for i in indices])
-plt.gca().invert_yaxis()
-plt.xlabel("Relative Importance")
+print("MODEL PERFORMANCE:")
+print(f"\nAccuracy:  {accuracy:.2%}")
+print(f"Precision: {precision:.2%}")
+# Display confusion matrix visualization
+disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix, display_labels=['Loss', 'Draw', 'Win'])
+disp.plot(cmap='Blues', values_format='d')
+plt.title('Confusion Matrix - Hot Form Teams WIN Strategy')
 plt.tight_layout()
 plt.show()
 
-print("\n" + "="*80)
+avg_probs = y_pred_proba.mean(axis=0)
+print(f"\nModel probability estimates:")
+print(f"  Loss: {avg_probs[0]:.1%}")
+print(f"  Draw: {avg_probs[1]:.1%} (true: {(test['result_code']==1).mean():.1%})")
+print(f"  Win:  {avg_probs[2]:.1%}")
+
+# Feature importance
+importances = xgb_model.feature_importances_
+feature_importance = pd.DataFrame({
+    'feature': predictors,
+    'importance': importances
+}).sort_values('importance', ascending=False).head(20)
+
+plt.figure(figsize=(10, 8))
+plt.barh(range(len(feature_importance)), feature_importance['importance'])
+plt.yticks(range(len(feature_importance)), feature_importance['feature'])
+plt.xlabel('Importance')
+plt.title('Top 20 Feature Importances - Draw Features Model')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.savefig('draw_features_importance.png', dpi=150, bbox_inches='tight')
+

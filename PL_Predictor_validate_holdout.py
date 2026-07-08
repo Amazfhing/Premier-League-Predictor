@@ -10,17 +10,16 @@ generalizes to completely unseen future seasons.
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import accuracy_score, precision_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, confusion_matrix, ConfusionMatrixDisplay
 from xgboost import XGBClassifier
 from sklearn.calibration import CalibratedClassifierCV
 from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 
-# === Data Loading ===
-matches = pd.read_csv("Datasets/matches.csv", index_col=0)
-print(f"Loaded {len(matches)} matches from CSV")
 
-# === Result Encoding ===
+matches = pd.read_csv("Datasets/matches.csv", index_col=0)
+
+
 # Encode results: L=0, D=1, W=2
 result_map = {'L': 0, 'D': 1, 'W': 2}
 matches['result_code'] = matches['result'].map(result_map)
@@ -28,7 +27,7 @@ matches['result_code'] = matches['result'].map(result_map)
 # Derive points for rolling features
 matches['points'] = matches['result_code'].apply(lambda x: 3 if x == 2 else (1 if x == 1 else 0))
 
-# === Odds Conversion ===
+
 # Convert odds to team perspective based on venue
 matches['team_odds'] = matches.apply(
     lambda row: row['odds_H'] if row['venue'] == 'Home' else row['odds_A'], axis=1
@@ -62,7 +61,7 @@ matches_rolling_10 = matches_rolling_3.groupby('team', group_keys=False).apply(
 )
 print(f"After 10-match rolling: {len(matches_rolling_10)} matches")
 
-# === Rest Days and Recent Form ===
+
 def add_rest_days_and_form(group):
     """Add rest days and points from last 5 matches"""
     group = group.sort_values('date')
@@ -75,7 +74,6 @@ matches_rolling_10 = matches_rolling_10.groupby('team', group_keys=False).apply(
 matches_rolling_10 = matches_rolling_10.dropna(subset=['rest_days', 'points_last_5'])
 print(f"After rest days and form: {len(matches_rolling_10)} matches")
 
-# === Draw-Specific Features ===
 def calculate_h2h_draw_rate(df, lookback_window=5):
     """Calculate head-to-head draw rate"""
     df = df.sort_values('date').copy()
@@ -101,14 +99,12 @@ def calculate_h2h_draw_rate(df, lookback_window=5):
 matches_with_features = calculate_h2h_draw_rate(matches_rolling_10)
 print(f"After h2h draw rate: {len(matches_with_features)} matches")
 
-# Additional draw-specific features
 matches_with_features['odds_balance'] = abs(matches_with_features['team_odds'] - matches_with_features['opp_odds'])
 matches_with_features['draw_value'] = 1 / matches_with_features['draw_odds']
 matches_with_features['favorite_strength'] = matches_with_features[['team_odds', 'opp_odds']].min(axis=1)
 matches_with_features['low_scoring'] = (matches_with_features['gf_rolling_3'] + matches_with_features['ga_rolling_3'] < 2.5).astype(int)
 matches_with_features['balanced_form'] = abs(matches_with_features['gf_rolling_3'] - matches_with_features['ga_rolling_3']) < 0.5
 
-# Recent draws feature
 def add_recent_draws(group):
     group = group.sort_values('date')
     group['recent_draws'] = (group['result'] == 'D').rolling(5, closed='left').sum()
@@ -122,9 +118,7 @@ print(f"After recent draws: {len(matches_with_features)} matches")
 matches_with_features['goals_variance'] = matches_with_features.groupby('team')['gf'].transform(
     lambda x: x.rolling(5, closed='left').std()
 ).fillna(0)
-print(f"After goals variance: {len(matches_with_features)} matches")
 
-# === Time Features ===
 # Extract hour from time (handles formats like "20:15" or "20:15 (21:15)")
 matches_with_features['hour'] = matches_with_features['time'].str.split(':').str[0].astype(int)
 # Extract day of week from date column (already a datetime)
@@ -132,7 +126,7 @@ matches_with_features['date'] = pd.to_datetime(matches_with_features['date'])
 matches_with_features['day'] = matches_with_features['date'].dt.dayofweek
 print(f"After time feature extraction: {len(matches_with_features)} matches")
 
-# === One-Hot Encoding ===
+
 encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
 venue_opponent_encoded = encoder.fit_transform(matches_with_features[['venue', 'opponent']])
 encoded_df = pd.DataFrame(
@@ -142,7 +136,6 @@ encoded_df = pd.DataFrame(
 )
 matches_encoded = pd.concat([matches_with_features, encoded_df], axis=1)
 
-# === Feature Columns ===
 venue_cols = [col for col in matches_encoded.columns if col.startswith('venue_')]
 opponent_cols = [col for col in matches_encoded.columns if col.startswith('opponent_')]
 
@@ -162,7 +155,7 @@ feature_cols = (
     draw_feature_cols
 )
 
-# === Holdout Split: Train on <2024-01-01, Test on >=2024-01-01 ===
+# Holdout Split: Train on <2024-01-01, Test on >=2024-01-01 
 matches_encoded['date'] = pd.to_datetime(matches_encoded['date'])
 train_df = matches_encoded[matches_encoded['date'] < '2024-01-01'].copy()
 holdout_df = matches_encoded[matches_encoded['date'] >= '2024-01-01'].copy()
@@ -172,7 +165,7 @@ print(f"Training data: {len(train_df)} matches (before 2024-01-01)")
 print(f"Holdout data: {len(holdout_df)} matches (2024-01-01 onwards)")
 print(f"Holdout date range: {holdout_df['date'].min()} to {holdout_df['date'].max()}")
 
-# === Training with Optimized Hyperparameters ===
+
 # Drop rows with NaN in predictor columns (SMOTE doesn't handle NaN)
 train_df_clean = train_df.dropna(subset=feature_cols)
 holdout_df_clean = holdout_df.dropna(subset=feature_cols)
@@ -184,7 +177,7 @@ y_train = train_df_clean['result_code']
 smote = SMOTE(random_state=42)
 X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
 
-# Train with best hyperparameters from Optuna
+# Train with best hyperparameters from Optuna(Obtained from PL_Predictor_bettingstrat.py)
 best_params = {
     'n_estimators': 124,
     'max_depth': 8,
@@ -200,7 +193,7 @@ best_params = {
     'eval_metric': 'mlogloss'
 }
 
-print(f"\n=== Training Model with Optimized Hyperparameters ===")
+
 base_model = XGBClassifier(**best_params)
 base_model.fit(X_train_balanced, y_train_balanced)
 
@@ -208,9 +201,6 @@ base_model.fit(X_train_balanced, y_train_balanced)
 calibrated_model = CalibratedClassifierCV(base_model, method='isotonic', cv='prefit')
 calibrated_model.fit(X_train, y_train)
 
-print("Model trained and calibrated successfully")
-
-# === Holdout Predictions ===
 X_holdout = holdout_df_clean[feature_cols]
 y_holdout = holdout_df_clean['result_code']
 
@@ -225,18 +215,23 @@ print(f"\n=== Overall Holdout Performance ===")
 print(f"Accuracy: {accuracy_holdout:.4f}")
 print(f"Macro Precision: {precision_holdout:.4f}")
 print(f"\nConfusion Matrix:")
-print(confusion_matrix(y_holdout, y_pred_holdout))
+conf_matrix_holdout = confusion_matrix(y_holdout, y_pred_holdout)
 
-# === Hot Form Filtering and Betting Simulation ===
+# Display confusion matrix visualization
+disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_holdout, display_labels=['Loss', 'Draw', 'Win'])
+disp.plot(cmap='Blues', values_format='d')
+plt.title('Confusion Matrix - Holdout Validation (2024-2025)')
+plt.tight_layout()
+plt.show()
+
+
 hot_form_mask = holdout_df_clean['points_last_5'] >= 12
 hot_form_holdout = holdout_df_clean[hot_form_mask].copy()
 
-print(f"\n=== Hot Form Teams in Holdout (points_last_5 >= 12) ===")
-print(f"Total holdout matches: {len(holdout_df_clean)}")
-print(f"Hot form matches: {len(hot_form_holdout)} ({100*len(hot_form_holdout)/len(holdout_df_clean):.1f}%)")
+
 
 if len(hot_form_holdout) == 0:
-    print("No hot form teams found in holdout data!")
+    print("No hot form teams found in holdout data")
     exit()
 
 # Get predictions for hot form matches
@@ -263,7 +258,7 @@ hot_form_holdout['return'] = hot_form_holdout.apply(
 )
 hot_form_holdout['profit'] = hot_form_holdout['return'] - hot_form_holdout['stake']
 
-# === Betting Results ===
+# Results 
 total_bets = len(hot_form_holdout)
 bets_won = hot_form_holdout['bet_won'].sum()
 win_rate = bets_won / total_bets if total_bets > 0 else 0
@@ -292,21 +287,6 @@ if len(hot_form_holdout) > 1:
     sharpe = returns_per_bet.mean() / returns_per_bet.std() if returns_per_bet.std() > 0 else 0
     print(f"Sharpe ratio: {sharpe:.2f}")
 
-# === Temporal Breakdown (by quarter) ===
-hot_form_holdout['quarter'] = pd.to_datetime(hot_form_holdout['date']).dt.quarter
-quarterly_results = hot_form_holdout.groupby('quarter').agg({
-    'bet_won': ['sum', 'count'],
-    'profit': 'sum'
-}).round(2)
-
-print(f"\n=== Quarterly Breakdown ===")
-for quarter in sorted(hot_form_holdout['quarter'].unique()):
-    q_data = hot_form_holdout[hot_form_holdout['quarter'] == quarter]
-    q_bets = len(q_data)
-    q_wins = q_data['bet_won'].sum()
-    q_profit = q_data['profit'].sum()
-    q_win_rate = q_wins / q_bets if q_bets > 0 else 0
-    print(f"Q{quarter}: {q_bets} bets, {q_wins} wins ({q_win_rate:.1%}), profit: ${q_profit:+.2f}")
 
 # === Comparison to Original Test Set ===
 print(f"\n=== Comparison to Original Test Set (2022-2023) ===")
@@ -315,35 +295,8 @@ print(f"  - Bets: 148")
 print(f"  - Win rate: 69.6%")
 print(f"  - ROI: +174.4%")
 print(f"  - Profit: $2,580.50")
-print(f"\nHoldout validation (2024-2025):")
+print(f"\nHoldout validation (2024-2026):")
 print(f"  - Bets: {total_bets}")
 print(f"  - Win rate: {win_rate:.1%}")
 print(f"  - ROI: {roi:+.1f}%")
 print(f"  - Profit: ${total_profit:+.2f}")
-
-# === Analysis and Insights ===
-if roi > 0:
-    print(f"\n✓ Strategy is PROFITABLE on holdout data")
-    if roi > 100:
-        print(f"  Edge appears to GENERALIZE well to unseen data")
-    elif roi > 50:
-        print(f"  Edge appears to PARTIALLY generalize (weaker than test set)")
-    else:
-        print(f"  Edge is WEAK on holdout data (significantly weaker than test set)")
-else:
-    print(f"\n✗ Strategy is UNPROFITABLE on holdout data")
-    print(f"  Edge does NOT generalize to unseen data")
-
-print(f"\n=== Next Steps ===")
-if roi > 50:
-    print("- Consider paper trading for 2-3 months before live deployment")
-    print("- Monitor for odds movement and execution costs (2-5%)")
-    print("- Implement strict bet sizing limits ($50-500 per bet)")
-    print("- Track performance weekly and adjust if edge deteriorates")
-else:
-    print("- DO NOT deploy to live betting")
-    print("- Investigate why edge failed to generalize:")
-    print("  * Market conditions changed?")
-    print("  * Overfitting to 2022-2023 data?")
-    print("  * Feature distribution shift?")
-    print("- Consider retraining with more recent data")

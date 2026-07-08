@@ -4,12 +4,13 @@ import numpy as np
 import optuna
 from sklearn.model_selection import TimeSeriesSplit
 from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score, precision_score, confusion_matrix, f1_score
+from sklearn.metrics import accuracy_score, precision_score, confusion_matrix, f1_score, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 from imblearn.over_sampling import SMOTE
 from sklearn.calibration import CalibratedClassifierCV
 import matplotlib.pyplot as plt
 
-# Load data - odds are already in Datasets/matches.csv (seasons 15-26)
+
 matches = pd.read_csv("Datasets/matches.csv", index_col=0)
 matches["date"] = pd.to_datetime(matches["date"])
 
@@ -28,7 +29,7 @@ matches["opp_odds"] = np.where(
 )
 matches["draw_odds"] = matches["odds_D"]
 
-# Rename for consistency with rest of code
+
 matches_with_odds = matches.copy()
 
 # Encode results
@@ -132,18 +133,10 @@ train = matches_encoded[matches_encoded["date"] < "2022-01-01"].copy()
 test = matches_encoded[matches_encoded["date"] >= "2022-01-01"].copy()
 
 # Drop rows with NaN in predictor columns (SMOTE doesn't handle NaN)
-print(f"Before cleaning - Train: {len(train)}, Test: {len(test)}")
 train = train.dropna(subset=predictors)
 test = test.dropna(subset=predictors)
-print(f"After cleaning - Train: {len(train)}, Test: {len(test)}")
 
-# Optuna hyperparameter optimization for hot form teams WIN strategy
-print("\n" + "=" * 80)
-print("OPTUNA HYPERPARAMETER OPTIMIZATION")
-print("Optimizing for F1 score on WIN class within hot form team matches")
-print("=" * 80)
-print("Running 100 trials with TimeSeriesSplit validation...")
-print("This will take 20-30 minutes...\n")
+
 
 def objective(trial):
     """Optuna objective: optimize WIN prediction quality for hot form matches"""
@@ -202,16 +195,13 @@ def objective(trial):
 study = optuna.create_study(direction="maximize", study_name="hot_form_wins_optimization")
 study.optimize(objective, n_trials=100, show_progress_bar=True)
 
-print(f"\n✅ Optimization complete!")
+
 print(f"Best F1 score (on WIN class within hot form): {study.best_value:.4f}")
 print(f"\nBest hyperparameters:")
 for key, value in study.best_params.items():
     print(f"  {key}: {value}")
 
 # Train final model with best hyperparameters
-print("\n" + "=" * 80)
-print("TRAINING FINAL MODEL WITH OPTIMIZED HYPERPARAMETERS")
-print("=" * 80)
 
 best_params = study.best_params.copy()
 best_params.update({"random_state": 42, "objective": "multi:softprob"})
@@ -237,23 +227,21 @@ accuracy = accuracy_score(test["result_code"], y_pred)
 precision = precision_score(test["result_code"], y_pred, average="macro", zero_division=0)
 conf_matrix = confusion_matrix(test["result_code"], y_pred)
 
-print("=" * 80)
+
 print("HOT FORM TEAMS WIN STRATEGY")
-print("=" * 80)
 print(f"\nModel Performance:")
 print(f"  Accuracy:  {accuracy:.2%}")
 print(f"  Precision: {precision:.2%}")
-print(f"\nConfusion Matrix:")
-print(f"              Predicted")
-print(f"              L    D    W")
-print(f"Actual L    {conf_matrix[0][0]:3d}  {conf_matrix[0][1]:3d}  {conf_matrix[0][2]:3d}")
-print(f"       D    {conf_matrix[1][0]:3d}  {conf_matrix[1][1]:3d}  {conf_matrix[1][2]:3d}")
-print(f"       W    {conf_matrix[2][0]:3d}  {conf_matrix[2][1]:3d}  {conf_matrix[2][2]:3d}")
+
+
+# Display confusion matrix visualization
+disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix, display_labels=['Loss', 'Draw', 'Win'])
+disp.plot(cmap='Blues', values_format='d')
+plt.title('Confusion Matrix - Hot Form Teams WIN Strategy')
+plt.tight_layout()
+plt.show()
 
 # Betting Strategy: Hot Form Teams to WIN
-print("\n" + "=" * 80)
-print("BETTING STRATEGY: Hot Form Teams to WIN")
-print("=" * 80)
 
 test_with_probs = test.copy()
 test_with_probs["prob_loss"] = y_pred_proba[:, 0]
@@ -280,17 +268,10 @@ win_bets = hot_form_teams[hot_form_teams["win_ev"] > ev_threshold].copy()
 print(f"\nPositive EV WIN bets: {len(win_bets)} (EV > {ev_threshold:.1%})")
 
 if len(win_bets) == 0:
-    print("\n⚠️  No positive EV WIN bets found for hot form teams.")
-    print("   This suggests:")
-    print("   1. Hot form team odds are efficient (bookmakers price them correctly)")
-    print("   2. Model doesn't have predictive edge on obvious favorites")
-    print("   3. Need to lower EV threshold or try different strategy")
+    print("\n No positive EV WIN bets found for hot form teams.")
 else:
-    # Fixed Stakes Betting - $10 per bet to validate edge without Kelly compounding
     FIXED_STAKE = 10  # Fixed bet size in dollars
 
-    print(f"\n💡 Using FIXED stakes of ${FIXED_STAKE} per bet")
-    print("   This isolates the edge from Kelly Criterion compounding")
 
     # Simulate betting
     starting_bankroll = 1000
@@ -298,7 +279,7 @@ else:
     bet_history = []
 
     for idx, row in win_bets.iterrows():
-        bet_size = FIXED_STAKE  # Fixed stake instead of Kelly sizing
+        bet_size = FIXED_STAKE  
 
         # Determine outcome
         actual_result = row["result_code"]
@@ -307,11 +288,11 @@ else:
         if actual_result == 2:  # Win
             profit = bet_size * (row["team_odds"] - 1)
             bankroll += profit
-            outcome = "✓"
+            outcome = "Hit"
         else:  # Loss or Draw
             profit = -bet_size
             bankroll += profit
-            outcome = "✗"
+            outcome = "Miss"
 
         bet_history.append({
             "match": f"{row['team']} vs {row['opp_name']}",
@@ -327,15 +308,14 @@ else:
             "profit": profit,
             "bankroll": bankroll,
             "outcome": outcome,
-            "quarter": (row["date"].month - 1) // 3 + 1
         })
 
     bet_df = pd.DataFrame(bet_history)
 
     # Calculate statistics
     total_bets = len(bet_df)
-    wins = len(bet_df[bet_df["outcome"] == "✓"])
-    losses = len(bet_df[bet_df["outcome"] == "✗"])
+    wins = len(bet_df[bet_df["outcome"] == "Hit"])
+    losses = len(bet_df[bet_df["outcome"] == "Miss"])
     win_rate = wins / total_bets if total_bets > 0 else 0
 
     total_staked = bet_df["bet_size"].sum()
@@ -353,19 +333,11 @@ else:
     # Implied probability from odds
     implied_prob = (1 / avg_odds)
 
-    # Temporal consistency
-    quarterly_stats = bet_df.groupby("quarter").agg({
-        "profit": "sum",
-        "outcome": lambda x: (x == "✓").sum() / len(x) if len(x) > 0 else 0
-    }).rename(columns={"outcome": "win_rate"})
-
     # Sharpe-like ratio
     bet_returns = bet_df["profit"] / bet_df["bet_size"]
     sharpe_ratio = bet_returns.mean() / bet_returns.std() if len(bet_returns) > 1 and bet_returns.std() > 0 else 0
 
-    # Print results
     print(f"\n{'Strategy Performance':^80}")
-    print("=" * 80)
     print(f"Total bets:        {total_bets}")
     print(f"Wins:              {wins}")
     print(f"Losses:            {losses}")
@@ -388,40 +360,14 @@ else:
     print(f"  Sharpe ratio:    {sharpe_ratio:.2f}")
     print(f"  Avg bet size:    ${bet_df['bet_size'].mean():.2f} (${FIXED_STAKE} fixed stake)")
 
-    print(f"\n{'Temporal Consistency':^80}")
-    print("-" * 80)
-    for q in sorted(quarterly_stats.index):
-        profit = quarterly_stats.loc[q, "profit"]
-        qtr_win_rate = quarterly_stats.loc[q, "win_rate"]
-        print(f"Q{q}: {profit:+8.2f} ({qtr_win_rate:.1%} win rate)")
-
-    # Top wins and losses
+    # Top wins 
     print(f"\n{'Top 5 Wins':^80}")
-    print("-" * 80)
     top_wins = bet_df.nlargest(5, "profit")
     for i, (_, row) in enumerate(top_wins.iterrows(), 1):
         print(f"{i}. {row['match']:<40} ${row['profit']:>8.2f} "
               f"(odds: {row['odds']:.2f}, prob: {row['prob_win']:.1%})")
 
-    print(f"\n{'Top 5 Losses':^80}")
-    print("-" * 80)
-    top_losses = bet_df.nsmallest(5, "profit")
-    for i, (_, row) in enumerate(top_losses.iterrows(), 1):
-        print(f"{i}. {row['match']:<40} ${row['profit']:>8.2f} "
-              f"(odds: {row['odds']:.2f}, prob: {row['prob_win']:.1%})")
 
-    # Comparison to previous draw strategy
-    print(f"\n{'Comparison to Previous Draw Strategy':^80}")
-    print("=" * 80)
-    print(f"{'Metric':<30} {'Draw Strategy':<20} {'WIN Strategy':<20}")
-    print("-" * 80)
-    print(f"{'Outcome bet on':<30} {'Draw (92.5%)':<20} {'Win (100%)':<20}")
-    print(f"{'Win rate':<30} {'25.2%':<20} {f'{win_rate:.1%}':<20}")
-    print(f"{'Average odds':<30} {'4.92':<20} {f'{avg_odds:.2f}':<20}")
-    print(f"{'ROI':<30} {'+119.5%':<20} {f'{roi:+.1f}%':<20}")
-    print(f"{'Sharpe ratio':<30} {'0.05':<20} {f'{sharpe_ratio:.2f}':<20}")
-    print(f"{'Q3 profit':<30} {'-$626':<20} "
-          f"{'$' + str(quarterly_stats.loc[3, 'profit']) if 3 in quarterly_stats.index else 'N/A':<20}")
 
     # Visualizations
     fig, axes = plt.subplots(2, 2, figsize=(15, 10))
@@ -451,17 +397,7 @@ else:
     axes[1, 0].set_ylabel("Profit ($)")
     axes[1, 0].grid(True, alpha=0.3, axis='y')
 
-    # Quarterly performance
-    quarters = sorted(quarterly_stats.index)
-    profits = [quarterly_stats.loc[q, "profit"] for q in quarters]
-    colors = ['green' if p > 0 else 'red' for p in profits]
-    axes[1, 1].bar([f"Q{q}" for q in quarters], profits, color=colors, alpha=0.7)
-    axes[1, 1].axhline(y=0, color='black', linestyle='-', linewidth=0.8)
-    axes[1, 1].set_title("Profit by Quarter", fontsize=14, fontweight='bold')
-    axes[1, 1].set_ylabel("Profit ($)")
-    axes[1, 1].grid(True, alpha=0.3, axis='y')
 
     plt.tight_layout()
     plt.savefig("hot_form_wins_analysis.png", dpi=150, bbox_inches='tight')
-    print(f"\n📊 Visualization saved: hot_form_wins_analysis.png")
     plt.show()
