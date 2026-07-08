@@ -184,7 +184,7 @@ The scripts follow a common prediction workflow with variations for different us
 
 3. **Train/test split**
    - Uses chronological split (not random) to respect temporal ordering.
-   - Typical split: train on matches before `2022-01-01` or `2024-01-01`, test on later matches.
+   - Typical split: train on matches before `2022-01-01`, test on later matches.
 
 4. **Model training**
    - Trains an `XGBClassifier` using Optuna-derived hyperparameters.
