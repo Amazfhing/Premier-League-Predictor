@@ -1,6 +1,6 @@
 # Premier League Predictor
 
-A Python machine-learning project that predicts Premier League match outcomes and identifies profitable betting opportunities using XGBoost, rolling team-form features, draw-specific feature engineering, and 1xBet betting odds.
+A Python machine-learning project that predicts the English Premier League football match outcomes and identifies profitable betting opportunities using XGBoost, rolling team-form features, draw-specific feature engineering, and 1xBet betting odds.
 
 The project trains Optuna-tuned XGBoost classifiers to predict whether a team will **win**, **draw**, or **lose** a match using unified historical data (seasons 15-26). Through extensive testing and validation, we discovered a **profitable betting strategy** that exploits a market inefficiency: hot form teams (≥12 points in last 5 games) are systematically underpriced by bookmakers. The strategy achieved **+174.4% ROI** on the test set and **+174.3% ROI** on holdout validation (2024-2026 seasons), confirming the edge generalizes to unseen data.
 
