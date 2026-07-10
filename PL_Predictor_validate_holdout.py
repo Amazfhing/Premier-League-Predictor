@@ -37,6 +37,14 @@ matches['opp_odds'] = matches.apply(
 )
 matches['draw_odds'] = matches['odds_D']
 
+# Fill missing values in performance columns (recent data may have missing stats)
+# These are counting statistics, so 0 is a reasonable default
+perf_cols = ['gf', 'ga', 'sh', 'sot', 'dist', 'fk', 'pk', 'pkatt', 'xg', 'xga']
+for col in perf_cols:
+    matches[col] = matches[col].fillna(0)
+
+print(f"Loaded {len(matches)} matches from dataset")
+
 # === Feature Engineering: Rolling Averages ===
 def rolling_averages(group, cols, new_cols, window=3):
     """Generate rolling averages per team"""
@@ -45,9 +53,6 @@ def rolling_averages(group, cols, new_cols, window=3):
     group[new_cols] = rolling
     group = group.dropna(subset=new_cols)
     return group
-
-# Performance columns for rolling averages
-perf_cols = ['gf', 'ga', 'sh', 'sot', 'dist', 'fk', 'pk', 'pkatt', 'xg', 'xga']
 
 # Generate 3-match rolling averages
 matches_rolling_3 = matches.groupby('team', group_keys=False).apply(
