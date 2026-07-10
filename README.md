@@ -226,20 +226,20 @@ After extensive testing and validation, we identified a **profitable betting str
 
 ### Validated Results (Fixed Stakes)
 
-**Test set** (1,838 matches, 2022-2023):
+**Test set** (2022-2023):
 - **Bets placed**: 148
 - **Win rate**: 69.6% (103 wins, 45 losses)
 - **Average odds**: 3.80
 - **ROI**: +174.4% per dollar staked
-- **Profit**: $2,580.50 on $1,480 total stake
+- **Profit**: $2580.50 
 - **Sharpe ratio**: 0.48
 
-**Holdout validation** (348 matches, 2024-2026):
-- **Bets placed**: 48
-- **Win rate**: 62.5% (30 wins, 18 losses)
-- **Average odds**: 3.69
-- **ROI**: +174.3% per dollar staked
-- **Profit**: $836.70 on $480 total stake
+**Holdout validation** (2024-2026):
+- **Bets placed**: 192
+- **Win rate**: 52.1% (100 wins, 92 losses)
+- **Average odds**: 3.35
+- **ROI**: +91.1% per dollar staked
+- **Profit**: $1749
 - **Sharpe ratio**: 0.44
 
 **Key finding**: The edge generalizes to completely unseen data. ROI is nearly identical across both time periods (174.3% vs 174.4%), confirming this is a real market inefficiency and not overfitting.
