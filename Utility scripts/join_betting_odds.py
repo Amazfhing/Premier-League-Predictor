@@ -64,10 +64,14 @@ def main():
     matches_file = 'Datasets/matches.csv'
     odds_file = 'Datasets/1xBet15-26.csv'
 
-    
+
     df_matches = pd.read_csv(matches_file, index_col=0)
 
-    
+    # Drop existing odds columns if they exist (to avoid duplicates when re-running)
+    odds_cols_to_drop = ['odds_H', 'odds_D', 'odds_A']
+    df_matches = df_matches.drop(columns=[col for col in odds_cols_to_drop if col in df_matches.columns])
+
+
     df_odds = pd.read_csv(odds_file)
 
     
@@ -101,11 +105,11 @@ def main():
     # Away team perspective
     df_odds_away = df_odds[[
         'parsed_date', 'parsed_time', 'awayTeam_normalized', 'homeTeam_normalized',
-        'A', 'D', 'H'  # Note: A and H are swapped for away perspective
+        'H', 'D', 'A'  # DO NOT SWAP - odds columns keep standard meaning
     ]].copy()
     df_odds_away.columns = [
         'date', 'time', 'team_normalized', 'opponent_normalized',
-        'odds_H', 'odds_D', 'odds_A'  # From away team's perspective
+        'odds_H', 'odds_D', 'odds_A'  # odds_H=home team, odds_A=away team (always)
     ]
     df_odds_away['venue'] = 'Away'
 

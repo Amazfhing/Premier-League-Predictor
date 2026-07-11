@@ -184,13 +184,13 @@ X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
 
 # Train with best hyperparameters from Optuna(Obtained from PL_Predictor_bettingstrat.py)
 best_params = {
-    'n_estimators': 124,
-    'max_depth': 8,
-    'learning_rate': 0.18065186239050293,
-    'subsample': 0.8911621408743737,
-    'colsample_bytree': 0.9833275793023915,
-    'gamma': 0.31889340107468545,
-    'min_child_weight': 1,
+    'n_estimators': 108,
+    'max_depth': 9,
+    'learning_rate': 0.05602744297770934,
+    'subsample': 0.9677566511568894,
+    'colsample_bytree': 0.6825846226742255,
+    'gamma': 0.38307566506274776,
+    'min_child_weight': 7,
     'random_state': 42,
     'objective': 'multi:softprob',
     'num_class': 3,

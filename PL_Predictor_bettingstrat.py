@@ -130,7 +130,7 @@ predictors = (
 
 # Train/test split
 train = matches_encoded[matches_encoded["date"] < "2022-01-01"].copy()
-test = matches_encoded[matches_encoded["date"] >= "2022-01-01"].copy()
+test = matches_encoded[(matches_encoded["date"] >= "2022-01-01") & (matches_encoded["date"] < "2024-01-01")].copy()
 
 # Drop rows with NaN in predictor columns (SMOTE doesn't handle NaN)
 train = train.dropna(subset=predictors)
