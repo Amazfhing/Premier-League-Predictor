@@ -1,8 +1,8 @@
 # Premier League Predictor
 
-A Python machine-learning project that predicts the English Premier League football match outcomes and identifies profitable betting opportunities using XGBoost, rolling team-form features, draw-specific feature engineering, and 1xBet betting odds.
+A Python machine-learning project that predicts English Premier League football match outcomes using XGBoost, rolling team-form features, draw-specific feature engineering, and betting odds integration.
 
-The project trains Optuna-tuned XGBoost classifiers to predict whether a team will **win**, **draw**, or **lose** a match using unified historical data (seasons 15-26). Through extensive testing and validation, we discovered a **profitable betting strategy** that exploits a market inefficiency: hot form teams (≥12 points in last 5 games) are systematically underpriced by bookmakers. The strategy achieved **+174.4% ROI** on the test set and **+174.3% ROI** on holdout validation (2024-2026 seasons), confirming the edge generalizes to unseen data.
+The project trains Optuna-tuned XGBoost classifiers to predict whether a team will **win**, **draw**, or **lose** a match using unified historical data (seasons 15-26). The model achieves 51.97% accuracy on 3-class prediction with proper temporal validation. The betting strategy derived from the model's predictions shows minimal edge (+3.4% ROI in test set) 
 
 ## Table of Contents
 
@@ -48,7 +48,7 @@ The target classes are encoded as:
 - **Time-aware evaluation**: Uses chronological train/test splits to respect temporal ordering and prevent data leakage.
 - **XGBoost classification**: Predicts Win/Draw/Loss outcomes with Optuna-tuned gradient-boosted trees.
 - **SMOTE balancing**: Addresses class imbalance in betting strategy models to improve minority class prediction.
-- **Validated betting strategy**: Hot form teams WIN strategy achieving +174% ROI on both test set and holdout validation.
+- **Betting strategy exploration**: Hot form teams WIN strategy analysis revealing the importance of data validation 
 - **Model reporting**: Prints accuracy, macro precision, confusion matrix, and feature importances; betting models simulate ROI and Sharpe ratio.
 
 ## Tech Stack
@@ -156,7 +156,7 @@ Trains an XGBoost classifier on historical Premier League data and prints evalua
 .\.venv\Scripts\python.exe PL_Predictor_bettingstrat.py
 ```
 
-Filters to hot form teams (≥12 points in last 5 games) and simulates fixed-stakes betting on WIN outcomes. This strategy achieved +174.4% ROI on the test set and +174.3% ROI on holdout validation.
+Filters to hot form teams (≥12 points in last 5 games) and simulates fixed-stakes betting on WIN outcomes.
 
 ### Validate the strategy on holdout data
 
@@ -219,37 +219,80 @@ After extensive testing and validation, we identified a **profitable betting str
 
 **Hot Form Teams WIN Strategy** (`PL_Predictor_bettingstrat.py`)
 
-- **Filter**: Hot form teams (≥12 points in last 5 games)
+This strategy uses **two-stage filtering** to identify profitable betting opportunities:
+
+#### Stage 1: Hot Form Filter
+- **Filter**: Teams with ≥12 points in last 5 games (4 wins, or 3 wins + 3 draws)
+- **Result**: ~200 candidate matches from the test set
+
+#### Stage 2: ML Expected Value Filter
+- **ML Model**: XGBoost predicts win probability for each hot form match
+- **Expected Value Calculation**: `EV = (prob_win × (odds - 1)) - (1 - prob_win)`
+- **Filter**: Only bet when EV > 0.05 (5% edge minimum)
+- **Result**: ~148 high-confidence bets from the 200 candidates
+
+#### Betting Parameters
 - **Bet on**: Team to WIN (not draw or loss)
 - **Stake**: Fixed $10 per bet (not Kelly Criterion due to probability miscalibration)
-- **Edge**: Bookmakers systematically underprice in-form favorites against weak opposition
+- **Edge**: ML model identifies matches where bookmakers underprice hot form teams
+
+### How It Works: Step-by-Step
+
+#### 1. Feature Engineering
+The ML model uses rolling team form features:
+- **3-match and 10-match rolling averages**: goals, shots, xG, defensive stats
+- **Recent form**: `points_last_5` (sum of points from last 5 matches)
+- **Rest days**: days since last match (fatigue indicator)
+- **Draw-specific features**: H2H draw rate, odds balance, favorite strength
+- **Betting odds**: Home, draw, and away odds from bookmakers (converted to team perspective)
+
+#### 2. ML Model Training
+- **Algorithm**: XGBoost classifier (Optuna-tuned hyperparameters)
+- **Training data**: All matches before 2022-01-01
+- **Class balancing**: SMOTE to handle imbalanced win/draw/loss distribution
+- **Calibration**: Isotonic calibration to improve probability estimates
+- **Output**: Win/Draw/Loss probabilities for each match
+
+#### 3. Hot Form Filter (Stage 1)
+Filter for teams with **≥12 points in last 5 games**:
+- This catches teams in excellent recent form (4+ wins, or 3 wins + draws)
+- Produces ~200 candidate matches from the 2022-2023 test set
+
+#### 4. Expected Value Filter (Stage 2)
+The ML model calculates Expected Value for each hot form match:
+
+```python
+EV = (prob_win × (odds - 1)) - (1 - prob_win)
+```
+
+Only bet when **EV > 0.05** (5% edge minimum). This filters the 200 candidates down to ~148 high-confidence bets.
+
+**Why this works**: The naive strategy of betting on ALL hot form teams has only 52% win rate. The ML model selects the subset where it predicts significantly higher win probability than the bookmaker's implied odds, achieving 66% win rate on test data but only 52.1% on holdout data.
 
 ### Validated Results (Fixed Stakes)
 
-**Test set** (2022-2023):
-- **Bets placed**: 148
-- **Win rate**: 69.6% (103 wins, 45 losses)
-- **Average odds**: 3.80
-- **ROI**: +174.4% per dollar staked
-- **Profit**: $2580.50 
-- **Sharpe ratio**: 0.48
+**Test set** (2022-2024):
+- **Bets placed**: 97
+- **Win rate**: 66.0% (64 wins, 33 losses)
+- **Average odds**: 1.68
+- **ROI**: +3.4% per dollar staked
+- **Profit**: $32.90 on $970 staked
+- **Sharpe ratio**: 0.04
 
 **Holdout validation** (2024-2026):
 - **Bets placed**: 192
 - **Win rate**: 52.1% (100 wins, 92 losses)
-- **Average odds**: 3.35
-- **ROI**: +91.1% per dollar staked
-- **Profit**: $1749
-- **Sharpe ratio**: 0.44
+- **Average odds**: 2.19
+- **ROI**: -12.3% per dollar staked
+- **Loss**: -$236.10 on $1,920 staked
+- **Sharpe ratio**: -0.13
 
-**Key finding**: The edge generalizes to completely unseen data. ROI is nearly identical across both time periods (174.3% vs 174.4%), confirming this is a real market inefficiency and not overfitting.
 
 ### Key Findings
 
-1. **The edge is real**: Fixed stakes validation proves this isn't Kelly compounding or overfitting
-2. **Systematic pattern**: Hot form favorites (Man City, Arsenal, Liverpool) against relegation-threatened teams are consistently underpriced
-3. **Market inefficiency**: Bookmakers give 3-8x odds (implying 12-30% win probability) when reality is ~70%
-4. **Probability miscalibration**: Model overestimates win probability (thinks 89.5%, reality ~70%), so Kelly Criterion breaks—use fixed stakes or very conservative fractional Kelly (0.05x)
+1. **Minimal edge with poor generalization**: The two-stage filtering creates a tiny +3.4% edge on test data, but this completely disappears on holdout data (-12.3% ROI). The strategy is not reliably profitable.
+
+2. **Severe model overconfidence**: The model predicts 94.4% win probability but actual win rate is 66.0%, indicating 28.4 percentage point overconfidence. This miscalibration invalidates Expected Value calculations.
 
 ### How to Run
 
@@ -261,20 +304,40 @@ After extensive testing and validation, we identified a **profitable betting str
 .\.venv\Scripts\python.exe PL_Predictor_validate_holdout.py
 ```
 
-### Important Caveats
+### Important Lessons Learned
 
-1. **Validated on holdout data**: Strategy tested on 2024-2025 season with consistent results (ROI 174.3% vs 174.4%)
-2. **Execution costs not modeled**: Real-world commissions, spread (2-5%) will reduce ROI
-3. **Betting limits**: Bookmakers cap winning bettors at $50-500 per bet
-4. **Odds movement**: Large bets move odds against you
-5. **Sample size**: 48 holdout bets + 148 test bets = 196 total bets across two time periods—paper trade for 2-3 months before live deployment
+1. **Model overconfidence**: The model predicts 94.4% win probability but actual is 66%, indicating severe miscalibration despite using isotonic calibration.
+
+2. **Match prediction focus**: The model achieves 51.97% accuracy for 3-class match prediction, which is reasonably above random (33.3%) but not exceptional.
 
 ### Recommended Next Steps
 
-1. **Paper trade**: Run strategy with $10 fixed stakes for 2-3 months on live data to verify execution
-2. **Monitor performance**: Track weekly win rate, ROI, and odds movement to detect edge degradation
-3. **Consider deployment**: If paper trading succeeds, use conservative fractional Kelly (0.05x) or continue fixed stakes
-4. **Track execution costs**: Measure real-world commissions and spread to validate profitability after fees
+**For improving the match prediction model:**
+
+1. **Address model overconfidence**: 
+   - Investigate why isotonic calibration isn't fixing the probability overestimation
+   - Try Platt scaling or temperature scaling as alternatives
+   - Add ensemble methods to improve calibration
+
+2. **Feature engineering improvements**:
+   - Add player-level data (injuries, suspensions, key player form)
+   - Include tactical features (formation matchups, playing style)
+   - Incorporate referee statistics (cards per game, penalty rates)
+   - Add weather and pitch conditions
+
+3. **Alternative modeling approaches**:
+   - Try ensemble methods (Random Forest, LightGBM) alongside XGBoost
+   - Experiment with deep learning (LSTM for sequential match history)
+   - Test multi-output models that predict score directly
+
+4. **Better evaluation metrics**:
+   - Focus on Brier score for probability quality
+   - Use log loss to measure calibration
+   - Calculate ROI on a separate odds source for validation
+
+5. **Domain-specific validation**:
+   - Analyze performance by team strength tiers (top 6, mid-table, relegation)
+   - Evaluate accuracy by match context (title race, relegation battle, meaningless end-of-season)
 
 ## Troubleshooting
 
